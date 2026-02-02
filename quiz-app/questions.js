@@ -1,0 +1,1341 @@
+// ===================================================
+// 🥚 Webのたまご - 問題データ
+// ===================================================
+
+// キャラクター定義
+const CHARACTERS = {
+  tama: { name: 'タマちゃん', emoji: '🥚', role: 'あなた' },
+  piyo: { name: 'ピヨちゃん', emoji: '🐣', role: '元気いっぱいの友達' },
+  cocco: { name: 'コッコちゃん', emoji: '🐥', role: 'おしゃれ好きな友達' },
+  niwao: { name: 'ニワオ', emoji: '🐓', role: 'ちょっとおっちょこちょい' },
+  fukurou: { name: 'フクロウさん', emoji: '🦉', role: '村のものしり' }
+};
+
+// ワールド定義
+const WORLDS = [
+  {
+    id: 1,
+    title: 'HTMLで関わってみよう',
+    subtitle: 'Webページの骨組みを作る！',
+    emoji: '🥚',
+    color: '#FFB347'
+  },
+  {
+    id: 2,
+    title: 'CSSでかわいくしよう',
+    subtitle: '色や形を変えて楽しく！',
+    emoji: '🐣',
+    color: '#87CEEB'
+  },
+  {
+    id: 3,
+    title: 'CSSでレイアウト',
+    subtitle: 'いい感じに並べよう！',
+    emoji: '🐥',
+    color: '#98D8C8'
+  },
+  {
+    id: 4,
+    title: 'JavaScriptで動かそう',
+    subtitle: 'ボタンを押したら何か起きる！',
+    emoji: '🐓',
+    color: '#F7DC6F'
+  },
+  {
+    id: 5,
+    title: 'jQueryを読んでみよう',
+    subtitle: '現場のコードに挑戦！',
+    emoji: '🏆',
+    color: '#BB8FCE'
+  }
+];
+
+// ===================================================
+// 🥚 ワールド1：HTML編
+// ===================================================
+
+const WORLD1_STAGES = [
+  // -------------------------------------------------
+  // ステージ 1-1: HTMLの基本構文
+  // -------------------------------------------------
+  {
+    world: 1,
+    stage: 1,
+    title: 'HTMLってなあに？',
+    mdnUrl: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Basic_HTML_syntax',
+    mdnTitle: 'Basic HTML syntax',
+
+    // オープニング会話
+    opening: [
+      { c: 'piyo', text: 'たいへんたいへーん！' },
+      { c: 'tama', text: 'どしたのピヨちゃん？' },
+      { c: 'piyo', text: '村のホームページ作ることになったんだけど...' },
+      { c: 'piyo', text: '誰も作り方知らないの！' },
+      { c: 'cocco', text: 'えー、どうしよ〜' },
+      { c: 'fukurou', text: 'ホッホッホ。HTMLというものを使うのじゃ' },
+      { c: 'piyo', text: 'えいちてぃーえむえる...？' },
+      { c: 'fukurou', text: 'まあ、やってみればわかるさ' },
+      { c: 'piyo', text: 'よーし！みんなでやってみよー！' },
+      { c: 'tama', text: 'わくわくしてきた！' }
+    ],
+
+    // 発見パート
+    discovery: [
+      {
+        speaker: 'piyo',
+        text: 'フクロウさんに聞いたんだけどね、こうやって書くんだって！'
+      },
+      {
+        type: 'code',
+        content: '<p>こんにちは</p>'
+      },
+      {
+        speaker: 'cocco',
+        text: 'サンドイッチみたい🥪 パンで具を挟んでる感じ？'
+      },
+      {
+        speaker: 'piyo',
+        text: 'あ！ほんとだ！最初と最後ので挟むんだね'
+      },
+      {
+        speaker: 'tama',
+        text: '最後のやつには / がついてる！'
+      },
+      {
+        speaker: 'piyo',
+        text: 'おお〜よく気づいたね！'
+      },
+      {
+        type: 'point',
+        title: 'タグのきほん',
+        content: '<開始タグ>中身</終了タグ>\n終了タグには / がつく！'
+      },
+      {
+        speaker: 'niwao',
+        text: 'ちなみに p は paragraph（段落）の略だぜ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'ニワオ何気にものしり！'
+      }
+    ],
+
+    // ゲーム導入
+    gameIntro: [
+      { c: 'piyo', text: 'じゃあさじゃあさ！' },
+      { c: 'piyo', text: 'ちゃんとわかったかゲームしよ！' },
+      { c: 'tama', text: 'いいよ！やろやろ！' }
+    ],
+
+    // 問題
+    questions: [
+      {
+        id: 'w1s1q1',
+        type: 'choice',
+        question: '正しく書けてるのど〜れだ？',
+        choices: [
+          { text: '<p>こんにちは</p>', correct: true },
+          { text: '<p>こんにちは<p>', correct: false },
+          { text: '<p>こんにちは', correct: false },
+          { text: 'p>こんにちは</p>', correct: false }
+        ],
+        correctComment: [
+          { c: 'piyo', text: 'すごーい！正解！🎉' },
+          { c: 'piyo', text: 'タグで挟んで、終了タグには / ！完璧だね' }
+        ],
+        wrongComment: [
+          { c: 'piyo', text: 'おしいっ！' },
+          { c: 'piyo', text: '終了タグには / が必要なんだ〜' },
+          { c: 'cocco', text: 'サンドイッチの両側のパン🥪を忘れずにね！' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s1q2',
+        type: 'choice',
+        question: 'このHTMLを見て！「属性」ってどの部分？',
+        code: '<a href="https://example.com">リンク</a>',
+        choices: [
+          { text: '<a>', correct: false },
+          { text: 'href="https://example.com"', correct: true },
+          { text: 'リンク', correct: false },
+          { text: '</a>', correct: false }
+        ],
+        correctComment: [
+          { c: 'niwao', text: 'おお、正解だ！' },
+          { c: 'niwao', text: '属性はタグに追加情報を与えるやつな' },
+          { c: 'piyo', text: 'href="..." みたいに書くんだね〜' }
+        ],
+        wrongComment: [
+          { c: 'niwao', text: 'ちょっと違うな〜' },
+          { c: 'niwao', text: '<a>はタグ、「リンク」は中身だぜ' },
+          { c: 'piyo', text: '属性は href="..." の部分だよ！' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s1q3',
+        type: 'sort',
+        question: 'HTMLページの骨組み、正しい順番に並べてみて！',
+        items: [
+          { id: 'a', text: '</html>' },
+          { id: 'b', text: '<body>ページの中身</body>' },
+          { id: 'c', text: '<!DOCTYPE html>' },
+          { id: 'd', text: '<html>' },
+          { id: 'e', text: '<head>設定</head>' }
+        ],
+        correctOrder: ['c', 'd', 'e', 'b', 'a'],
+        correctComment: [
+          { c: 'piyo', text: 'すっご〜い！完璧！🎉' },
+          { c: 'fukurou', text: 'DOCTYPE → html → head → body → /html の順じゃな' },
+          { c: 'piyo', text: '頭(head)が先で、体(body)が後なんだね！' }
+        ],
+        wrongComment: [
+          { c: 'piyo', text: 'あれれ？ちょっと順番が違うかも' },
+          { c: 'fukurou', text: '最初は必ず <!DOCTYPE html> で始まるのじゃ' },
+          { c: 'fukurou', text: 'HTMLの自己紹介みたいなものじゃな' }
+        ],
+        points: 15
+      }
+    ],
+
+    // クリア時
+    clearComment: [
+      { c: 'piyo', text: 'やった〜！全部できたね！' },
+      { c: 'cocco', text: 'HTMLの基本、バッチリだ〜' },
+      { c: 'piyo', text: '次はもっと詳しく見ていこ！' }
+    ]
+  },
+
+  // -------------------------------------------------
+  // ステージ 1-2: メタデータ
+  // -------------------------------------------------
+  {
+    world: 1,
+    stage: 2,
+    title: 'ページの設定をしよう',
+    mdnUrl: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata',
+    mdnTitle: 'Webpage metadata',
+
+    opening: [
+      { c: 'piyo', text: 'ねえねえ、さっき出てきた <head> ってなんだろ？' },
+      { c: 'niwao', text: 'あー、あれはページの「裏方さん」だな' },
+      { c: 'cocco', text: '裏方さん...？' },
+      { c: 'niwao', text: 'ブラウザのタブに出る名前とか、文字化け防止とか' },
+      { c: 'niwao', text: '画面には見えないけど大事な設定を書くとこだ' },
+      { c: 'piyo', text: 'へ〜！見えないところで頑張ってるんだね' }
+    ],
+
+    discovery: [
+      {
+        speaker: 'niwao',
+        text: 'headの中にはこういうのを書くんだ'
+      },
+      {
+        type: 'code',
+        content: '<head>\n  <meta charset="UTF-8">\n  <title>たまご村</title>\n</head>'
+      },
+      {
+        speaker: 'piyo',
+        text: '<title>ってなに？'
+      },
+      {
+        speaker: 'niwao',
+        text: 'ブラウザのタブに出る名前だぜ'
+      },
+      {
+        type: 'image',
+        description: 'ブラウザタブのイメージ: 🐔 たまご村 ✕'
+      },
+      {
+        speaker: 'cocco',
+        text: 'あ〜！上のちっちゃいとこに出るやつね！'
+      },
+      {
+        speaker: 'niwao',
+        text: '<meta charset="UTF-8"> は文字化け防止のおまじない✨'
+      },
+      {
+        type: 'point',
+        title: 'headとbodyの違い',
+        content: 'head = 裏方の設定（画面に見えない）\nbody = 表舞台（画面に見える）'
+      },
+      {
+        speaker: 'piyo',
+        text: 'headは舞台裏、bodyは舞台の上ってことだね！'
+      }
+    ],
+
+    gameIntro: [
+      { c: 'piyo', text: 'よし！わかったかゲームいくよ〜' }
+    ],
+
+    questions: [
+      {
+        id: 'w1s2q1',
+        type: 'choice',
+        question: 'ブラウザのタブに出るタイトルを設定するタグは？',
+        choices: [
+          { text: '<header>', correct: false },
+          { text: '<title>', correct: true },
+          { text: '<h1>', correct: false },
+          { text: '<name>', correct: false }
+        ],
+        correctComment: [
+          { c: 'piyo', text: 'ピンポーン！🎉' },
+          { c: 'niwao', text: '<h1>は画面に出る見出しで、<title>はタブに出る名前な' },
+          { c: 'piyo', text: '似てるけど違うんだね〜' }
+        ],
+        wrongComment: [
+          { c: 'niwao', text: 'おっと、違うぜ〜' },
+          { c: 'niwao', text: '<title>がタブに出る名前だ' },
+          { c: 'piyo', text: '<header>はまた別のやつなんだって！' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s2q2',
+        type: 'match',
+        question: 'headに入る？bodyに入る？分けてみよう！',
+        pairs: [
+          { item: '<title>ページ名</title>', match: 'head' },
+          { item: '<p>本文だよ</p>', match: 'body' },
+          { item: '<meta charset="UTF-8">', match: 'head' },
+          { item: '<h1>見出し</h1>', match: 'body' }
+        ],
+        categories: ['head', 'body'],
+        correctComment: [
+          { c: 'cocco', text: 'やった〜！全部合ってる！' },
+          { c: 'piyo', text: '裏方(head)と表舞台(body)、バッチリだね！' }
+        ],
+        wrongComment: [
+          { c: 'piyo', text: 'あれれ？ちょっと混ざっちゃったかな' },
+          { c: 'niwao', text: '画面に見えるやつはbody、見えない設定はheadだぜ' }
+        ],
+        points: 15
+      }
+    ],
+
+    clearComment: [
+      { c: 'piyo', text: 'headとbody、もう完璧だね！' },
+      { c: 'niwao', text: '次は画面に見える部分を詳しくやるぜ' }
+    ]
+  },
+
+  // -------------------------------------------------
+  // ステージ 1-3: 見出しと段落
+  // -------------------------------------------------
+  {
+    world: 1,
+    stage: 3,
+    title: '見出しをつけよう',
+    mdnUrl: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Headings_and_paragraphs',
+    mdnTitle: 'Headings and paragraphs',
+
+    opening: [
+      { c: 'cocco', text: 'ねえ、村のページにタイトルつけたいな〜' },
+      { c: 'piyo', text: '「たまご村へようこそ！」みたいな？' },
+      { c: 'cocco', text: 'そうそう！大きい文字でドーンって！' },
+      { c: 'niwao', text: 'それには「見出し」タグを使うんだぜ' }
+    ],
+
+    discovery: [
+      {
+        speaker: 'niwao',
+        text: '見出しは <h1> から <h6> まであるんだ'
+      },
+      {
+        type: 'code',
+        content: '<h1>たまご村へようこそ</h1>\n<h2>村の紹介</h2>\n<h3>住んでる仲間たち</h3>'
+      },
+      {
+        speaker: 'piyo',
+        text: 'hって何の略？'
+      },
+      {
+        speaker: 'niwao',
+        text: 'heading（見出し）のhだな'
+      },
+      {
+        speaker: 'cocco',
+        text: '数字が小さいほど大きいんだね！'
+      },
+      {
+        type: 'point',
+        title: '見出しの大きさ',
+        content: 'h1 = 一番でっかい（大見出し）\nh2 = 中くらい\nh3 = もうちょっと小さい\n...\nh6 = 一番ちっちゃい'
+      },
+      {
+        speaker: 'fukurou',
+        text: '大事なルールがあるぞ'
+      },
+      {
+        speaker: 'fukurou',
+        text: 'h1 → h2 → h3 の順番で使うのじゃ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'いきなりh3とか使っちゃダメってこと？'
+      },
+      {
+        speaker: 'fukurou',
+        text: 'その通り。本の章立てと同じじゃな'
+      },
+      {
+        speaker: 'cocco',
+        text: '第1章の次は第2章、いきなり第3章にならないもんね！'
+      }
+    ],
+
+    gameIntro: [
+      { c: 'piyo', text: '見出しゲームいくよ〜！' }
+    ],
+
+    questions: [
+      {
+        id: 'w1s3q1',
+        type: 'choice',
+        question: '一番大きい見出しを表すタグはど〜れだ？',
+        choices: [
+          { text: '<h6>', correct: false },
+          { text: '<h1>', correct: true },
+          { text: '<heading>', correct: false },
+          { text: '<title>', correct: false }
+        ],
+        correctComment: [
+          { c: 'piyo', text: '正解！🎉 h1が一番でっかいやつ！' },
+          { c: 'niwao', text: '数字が小さいほど大きいんだよな' }
+        ],
+        wrongComment: [
+          { c: 'piyo', text: 'ちがうよ〜！' },
+          { c: 'niwao', text: 'h1が一番大きくて、h6が一番小さいんだ' },
+          { c: 'piyo', text: '数字と大きさが逆なの、ちょっとややこしいよね' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s3q2',
+        type: 'choice',
+        question: 'この見出し、何かおかしくない？',
+        code: '<h1>ニュース</h1>\n<h3>今日の天気</h3>\n<h2>スポーツ</h2>',
+        choices: [
+          { text: '問題ないよ', correct: false },
+          { text: 'h2を飛ばしてh3を使ってる', correct: true },
+          { text: 'h1が最初なのがダメ', correct: false },
+          { text: 'h2とh3が逆', correct: false }
+        ],
+        correctComment: [
+          { c: 'cocco', text: 'さすが〜！よく見てるね！' },
+          { c: 'fukurou', text: 'h1の次はh2、その次がh3の順番じゃな' },
+          { c: 'piyo', text: '飛ばしちゃダメなんだよね〜' }
+        ],
+        wrongComment: [
+          { c: 'fukurou', text: 'よく見てみるのじゃ' },
+          { c: 'fukurou', text: 'h1 → h3 と、h2を飛ばしておるな' },
+          { c: 'piyo', text: '順番通りに使わないといけないんだね！' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s3q3',
+        type: 'predict',
+        question: 'このHTMLをブラウザで見ると、どうなる？',
+        code: '<h2>お知らせ</h2>\n<p>明日は休みです。</p>\n<p>よろしくね！</p>',
+        choices: [
+          { text: '3行が全部同じ大きさで出る', correct: false },
+          { text: '「お知らせ」が大きく、下に2つの段落', correct: true },
+          { text: '全部1行につながって出る', correct: false },
+          { text: 'エラーになっちゃう', correct: false }
+        ],
+        correctComment: [
+          { c: 'piyo', text: 'あったり〜！🎉' },
+          { c: 'piyo', text: 'h2は見出しだから大きく出て' },
+          { c: 'piyo', text: 'pは段落だから普通の大きさなんだね！' }
+        ],
+        wrongComment: [
+          { c: 'piyo', text: 'う〜ん、そうじゃないんだ〜' },
+          { c: 'niwao', text: '<h2>は見出しだから大きく表示される' },
+          { c: 'niwao', text: '<p>は段落だから普通サイズだぜ' }
+        ],
+        points: 10
+      }
+    ],
+
+    clearComment: [
+      { c: 'cocco', text: '見出しマスターだね！' },
+      { c: 'piyo', text: '村のページ、かっこよくなりそう！' }
+    ]
+  },
+
+  // -------------------------------------------------
+  // ステージ 1-4: 強調と重要性
+  // -------------------------------------------------
+  {
+    world: 1,
+    stage: 4,
+    title: '大事なとこを目立たせよう',
+    mdnUrl: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Emphasis_and_importance',
+    mdnTitle: 'Emphasis and importance',
+
+    opening: [
+      { c: 'cocco', text: 'ねえ、「期間限定！」とか目立たせたいんだけど〜' },
+      { c: 'piyo', text: '太字とか斜めの字にするやつ？' },
+      { c: 'cocco', text: 'そうそう！どうやるの？' },
+      { c: 'niwao', text: 'それにはいくつか方法があるんだ' }
+    ],
+
+    discovery: [
+      {
+        speaker: 'niwao',
+        text: '「これ重要！」って意味を込めるなら <strong> を使う'
+      },
+      {
+        type: 'code',
+        content: '<p>この商品は<strong>期間限定</strong>です！</p>'
+      },
+      {
+        speaker: 'cocco',
+        text: 'strong...強いってこと？'
+      },
+      {
+        speaker: 'niwao',
+        text: 'そう！「ここ大事だよ！」って意味になる'
+      },
+      {
+        speaker: 'piyo',
+        text: '他にもあるの？'
+      },
+      {
+        speaker: 'niwao',
+        text: '「強調したい」ときは <em> だな'
+      },
+      {
+        type: 'code',
+        content: '<p>ここは<em>本当に</em>おいしいよ！</p>'
+      },
+      {
+        speaker: 'piyo',
+        text: 'em...？'
+      },
+      {
+        speaker: 'niwao',
+        text: 'emphasis（強調）の略だ'
+      },
+      {
+        type: 'point',
+        title: '意味のあるタグ vs 見た目だけのタグ',
+        content: '<strong> = 意味的に「重要」（太字になる）\n<em> = 意味的に「強調」（斜体になる）\n\n<b> = ただ太字にするだけ\n<i> = ただ斜体にするだけ'
+      },
+      {
+        speaker: 'cocco',
+        text: '見た目は同じでも意味が違うんだね〜'
+      },
+      {
+        speaker: 'fukurou',
+        text: '音声読み上げソフトは <strong> を強く読んでくれたりするのじゃ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'へ〜！目が見えない人にも伝わるんだ！' }
+    ],
+
+    gameIntro: [
+      { c: 'cocco', text: 'よーし！違いがわかるかな？' }
+    ],
+
+    questions: [
+      {
+        id: 'w1s4q1',
+        type: 'choice',
+        question: '「意味的に重要」を表すタグはど〜れ？',
+        choices: [
+          { text: '<b>（太字）', correct: false },
+          { text: '<i>（斜体）', correct: false },
+          { text: '<strong>', correct: true },
+          { text: '<big>', correct: false }
+        ],
+        correctComment: [
+          { c: 'niwao', text: '正解！🎉' },
+          { c: 'niwao', text: '<strong>は「重要」って意味があるんだ' },
+          { c: 'cocco', text: '<b>はただ太くするだけなんだね〜' }
+        ],
+        wrongComment: [
+          { c: 'niwao', text: 'おっと〜' },
+          { c: 'niwao', text: '<b>は見た目を太くするだけ' },
+          { c: 'niwao', text: '「意味」を込めたいなら<strong>だぜ' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s4q2',
+        type: 'choice',
+        question: '<em>と<i>、見た目は同じ斜体だけど違いは？',
+        code: '<p>これは<em>期間限定</em>です</p>\n<p>これは<i>期間限定</i>です</p>',
+        choices: [
+          { text: '違いはない、同じもの', correct: false },
+          { text: '<em>は強調の意味があり、<i>は見た目だけ', correct: true },
+          { text: '<i>の方が意味がある', correct: false },
+          { text: '<em>は古い書き方', correct: false }
+        ],
+        correctComment: [
+          { c: 'cocco', text: 'すご〜い！わかってる！🎉' },
+          { c: 'fukurou', text: '<em>はemphasis、強調の意味があるのじゃ' },
+          { c: 'piyo', text: '見た目じゃなくて意味で選ぶんだね！' }
+        ],
+        wrongComment: [
+          { c: 'piyo', text: 'う〜ん、ちょっと違うかも' },
+          { c: 'niwao', text: '<em>は「強調」って意味がある' },
+          { c: 'niwao', text: '<i>はただ斜体にするだけなんだ' }
+        ],
+        points: 10
+      }
+    ],
+
+    clearComment: [
+      { c: 'cocco', text: '意味と見た目の違い、わかったね！' },
+      { c: 'piyo', text: 'HTMLって奥が深いなあ〜' }
+    ]
+  },
+
+  // -------------------------------------------------
+  // ステージ 1-5: リスト
+  // -------------------------------------------------
+  {
+    world: 1,
+    stage: 5,
+    title: 'リストを作ろう',
+    mdnUrl: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Lists',
+    mdnTitle: 'Lists',
+
+    opening: [
+      { c: 'piyo', text: '買い物メモをページに書きたいな〜' },
+      { c: 'cocco', text: '・たまご ・牛乳 ・パン みたいな？' },
+      { c: 'piyo', text: 'そうそう！箇条書きってやつ！' },
+      { c: 'niwao', text: 'それは「リスト」タグを使うんだぜ' }
+    ],
+
+    discovery: [
+      {
+        speaker: 'niwao',
+        text: 'リストには2種類あるんだ'
+      },
+      {
+        type: 'point',
+        title: '2種類のリスト',
+        content: '<ul> = 順序なしリスト（・で始まる）\n<ol> = 順序ありリスト（1. 2. 3.で始まる）'
+      },
+      {
+        speaker: 'niwao',
+        text: '買い物リストは順番関係ないから <ul> だな'
+      },
+      {
+        type: 'code',
+        content: '<ul>\n  <li>たまご</li>\n  <li>牛乳</li>\n  <li>パン</li>\n</ul>'
+      },
+      {
+        speaker: 'piyo',
+        text: '<li>ってなに？'
+      },
+      {
+        speaker: 'niwao',
+        text: 'list item（リストの項目）の略だ'
+      },
+      {
+        speaker: 'cocco',
+        text: 'じゃあ順番が大事なやつは？'
+      },
+      {
+        speaker: 'niwao',
+        text: 'レシピの手順とかは <ol> を使う'
+      },
+      {
+        type: 'code',
+        content: '<ol>\n  <li>卵を割る</li>\n  <li>混ぜる</li>\n  <li>焼く</li>\n</ol>'
+      },
+      {
+        speaker: 'piyo',
+        text: 'こっちは1. 2. 3.って番号がつくんだね！'
+      },
+      {
+        speaker: 'niwao',
+        text: 'ul = unordered（順序なし）、ol = ordered（順序あり）だ'
+      }
+    ],
+
+    gameIntro: [
+      { c: 'piyo', text: 'リストクイズいくよ〜！' }
+    ],
+
+    questions: [
+      {
+        id: 'w1s5q1',
+        type: 'choice',
+        question: '買い物リストを作るのにぴったりなタグの組み合わせは？',
+        choices: [
+          { text: '<ul>と<li>', correct: true },
+          { text: '<ol>と<li>', correct: false },
+          { text: '<list>と<item>', correct: false },
+          { text: '<ul>と<item>', correct: false }
+        ],
+        correctComment: [
+          { c: 'piyo', text: '正解！🎉' },
+          { c: 'niwao', text: '順番関係ない買い物リストは<ul>だな' },
+          { c: 'piyo', text: '中身は<li>で囲むんだよね！' }
+        ],
+        wrongComment: [
+          { c: 'niwao', text: 'おっと〜' },
+          { c: 'niwao', text: '順番がないリストは<ul>、中身は<li>で囲むんだ' },
+          { c: 'piyo', text: '<list>とか<item>は存在しないタグだよ〜' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s5q2',
+        type: 'choice',
+        question: 'レシピの「手順」を書くのに適切なのは？',
+        choices: [
+          { text: '<ul>（順序なしリスト）', correct: false },
+          { text: '<ol>（順序ありリスト）', correct: true },
+          { text: '<p>（段落）', correct: false },
+          { text: '<menu>', correct: false }
+        ],
+        correctComment: [
+          { c: 'cocco', text: 'ピンポーン！🎉' },
+          { c: 'cocco', text: '手順は順番が大事だもんね〜' },
+          { c: 'niwao', text: 'ol = ordered（順序あり）だ！' }
+        ],
+        wrongComment: [
+          { c: 'piyo', text: 'う〜ん、レシピの手順は順番が大事だよね？' },
+          { c: 'niwao', text: '順番ありは <ol> を使うんだ' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s5q3',
+        type: 'sort',
+        question: 'リストのHTMLを正しい順番に並べてみて！',
+        items: [
+          { id: 'a', text: '</ul>' },
+          { id: 'b', text: '<li>りんご</li>' },
+          { id: 'c', text: '<ul>' },
+          { id: 'd', text: '<li>みかん</li>' }
+        ],
+        correctOrder: ['c', 'b', 'd', 'a'],
+        correctComment: [
+          { c: 'piyo', text: 'かんぺき！🎉' },
+          { c: 'piyo', text: '<ul>で始まって、<li>が中にあって、</ul>で終わる！' }
+        ],
+        wrongComment: [
+          { c: 'piyo', text: 'あれれ？' },
+          { c: 'niwao', text: '<ul>で始まって、中に<li>を入れて、</ul>で閉じるんだ' }
+        ],
+        points: 15
+      }
+    ],
+
+    clearComment: [
+      { c: 'piyo', text: 'リストもバッチリだね！' },
+      { c: 'cocco', text: 'お買い物メモが作れるようになった〜' }
+    ]
+  },
+
+  // -------------------------------------------------
+  // ステージ 1-6: 文書構造
+  // -------------------------------------------------
+  {
+    world: 1,
+    stage: 6,
+    title: 'ページを区切ろう',
+    mdnUrl: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Structuring_documents',
+    mdnTitle: 'Structuring documents',
+
+    opening: [
+      { c: 'cocco', text: 'ページが長くなってきた〜' },
+      { c: 'piyo', text: 'ヘッダーとかフッターとか、ちゃんと分けたいね' },
+      { c: 'fukurou', text: 'ページを意味のある部分に分けるタグがあるぞ' }
+    ],
+
+    discovery: [
+      {
+        speaker: 'fukurou',
+        text: 'Webページはこんな構造になっていることが多いのじゃ'
+      },
+      {
+        type: 'point',
+        title: 'ページの構造',
+        content: '<header> = ページの上部（ロゴ、タイトルなど）\n<nav> = ナビゲーション（メニュー）\n<main> = メインコンテンツ\n<aside> = サイドバー\n<footer> = ページの下部（著作権など）'
+      },
+      {
+        speaker: 'piyo',
+        text: 'へ〜！場所によってタグが違うんだ'
+      },
+      {
+        speaker: 'fukurou',
+        text: 'これを「セマンティック（意味のある）タグ」というのじゃ'
+      },
+      {
+        speaker: 'cocco',
+        text: 'じゃあ<div>ってなに？よく見るけど'
+      },
+      {
+        speaker: 'niwao',
+        text: '<div>は意味を持たない「ただの箱」だな'
+      },
+      {
+        speaker: 'niwao',
+        text: 'グループ化したいけど特別な意味がないときに使う'
+      },
+      {
+        type: 'code',
+        content: '<header>\n  <h1>たまご村</h1>\n  <nav>\n    <a href="#about">紹介</a>\n    <a href="#access">アクセス</a>\n  </nav>\n</header>\n<main>\n  <p>ようこそ！</p>\n</main>\n<footer>\n  <p>© たまご村</p>\n</footer>'
+      },
+      {
+        speaker: 'piyo',
+        text: 'わ〜、ちゃんと分かれてて見やすい！'
+      }
+    ],
+
+    gameIntro: [
+      { c: 'fukurou', text: 'では、構造クイズじゃ' }
+    ],
+
+    questions: [
+      {
+        id: 'w1s6q1',
+        type: 'choice',
+        question: 'ナビゲーションメニューを囲むのにぴったりなタグは？',
+        choices: [
+          { text: '<navigation>', correct: false },
+          { text: '<nav>', correct: true },
+          { text: '<menu>', correct: false },
+          { text: '<header>', correct: false }
+        ],
+        correctComment: [
+          { c: 'piyo', text: '正解！🎉' },
+          { c: 'fukurou', text: '<nav>はnavigationの略じゃな' }
+        ],
+        wrongComment: [
+          { c: 'fukurou', text: 'ナビゲーションは<nav>じゃ' },
+          { c: 'piyo', text: '<navigation>じゃなくて短く<nav>なんだね！' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s6q2',
+        type: 'choice',
+        question: '<div>はどんなときに使う？',
+        choices: [
+          { text: 'ヘッダーを作るとき', correct: false },
+          { text: 'ナビを作るとき', correct: false },
+          { text: '特別な意味はないけどグループ化したいとき', correct: true },
+          { text: 'フッターを作るとき', correct: false }
+        ],
+        correctComment: [
+          { c: 'niwao', text: 'その通り！🎉' },
+          { c: 'niwao', text: '<div>は意味のない「ただの箱」だ' },
+          { c: 'cocco', text: '意味があるときはちゃんとしたタグを使うんだね！' }
+        ],
+        wrongComment: [
+          { c: 'niwao', text: 'う〜ん、<div>は「ただの箱」なんだ' },
+          { c: 'niwao', text: 'ヘッダーなら<header>、ナビなら<nav>を使うぜ' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s6q3',
+        type: 'match',
+        question: 'タグと役割を結びつけよう！',
+        pairs: [
+          { item: '<header>', match: 'ページ上部' },
+          { item: '<footer>', match: 'ページ下部' },
+          { item: '<main>', match: 'メインコンテンツ' },
+          { item: '<nav>', match: 'ナビゲーション' }
+        ],
+        categories: ['ページ上部', 'ページ下部', 'メインコンテンツ', 'ナビゲーション'],
+        correctComment: [
+          { c: 'cocco', text: 'パーフェクト！🎉' },
+          { c: 'fukurou', text: 'ページの構造、バッチリじゃな' }
+        ],
+        wrongComment: [
+          { c: 'piyo', text: 'あれれ？' },
+          { c: 'fukurou', text: 'header=上、footer=下、nav=メニュー、main=中身じゃ' }
+        ],
+        points: 15
+      }
+    ],
+
+    clearComment: [
+      { c: 'cocco', text: 'ページの構造がわかってきた！' },
+      { c: 'piyo', text: '村のページ、いい感じになりそう！' }
+    ]
+  },
+
+  // -------------------------------------------------
+  // ステージ 1-7: リンク
+  // -------------------------------------------------
+  {
+    world: 1,
+    stage: 7,
+    title: 'リンクを作ろう',
+    mdnUrl: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Creating_links',
+    mdnTitle: 'Creating links',
+
+    opening: [
+      { c: 'piyo', text: '他のページにジャンプするやつ作りたい！' },
+      { c: 'cocco', text: 'クリックしたら飛ぶやつね！' },
+      { c: 'niwao', text: 'それは「リンク」ってやつだな' }
+    ],
+
+    discovery: [
+      {
+        speaker: 'niwao',
+        text: 'リンクは <a> タグで作るんだ'
+      },
+      {
+        type: 'code',
+        content: '<a href="https://example.com">こちらをクリック</a>'
+      },
+      {
+        speaker: 'piyo',
+        text: 'aって何の略？'
+      },
+      {
+        speaker: 'niwao',
+        text: 'anchor（アンカー、錨）の略だ'
+      },
+      {
+        speaker: 'cocco',
+        text: 'hrefってのは？'
+      },
+      {
+        speaker: 'niwao',
+        text: 'hypertext reference、つまり「どこに飛ぶか」の指定だな'
+      },
+      {
+        type: 'point',
+        title: 'リンクの書き方',
+        content: '<a href="飛び先のURL">表示される文字</a>'
+      },
+      {
+        speaker: 'piyo',
+        text: '同じページの中でジャンプとかできる？'
+      },
+      {
+        speaker: 'niwao',
+        text: 'できるぜ！#を使うんだ'
+      },
+      {
+        type: 'code',
+        content: '<!-- ジャンプ先 -->\n<h2 id="about">たまご村について</h2>\n\n<!-- リンク -->\n<a href="#about">紹介を見る</a>'
+      },
+      {
+        speaker: 'piyo',
+        text: 'idをつけたところに#で飛べるんだ！'
+      },
+      {
+        speaker: 'niwao',
+        text: 'そう！ページ内リンクってやつだな'
+      }
+    ],
+
+    gameIntro: [
+      { c: 'piyo', text: 'リンククイズ！どこに飛ぶかな〜？' }
+    ],
+
+    questions: [
+      {
+        id: 'w1s7q1',
+        type: 'choice',
+        question: 'リンクを作るときに使うタグは？',
+        choices: [
+          { text: '<link>', correct: false },
+          { text: '<a>', correct: true },
+          { text: '<href>', correct: false },
+          { text: '<url>', correct: false }
+        ],
+        correctComment: [
+          { c: 'piyo', text: '正解！🎉' },
+          { c: 'niwao', text: 'aはanchor（アンカー）の略だ' },
+          { c: 'piyo', text: '<link>じゃないの意外だよね〜' }
+        ],
+        wrongComment: [
+          { c: 'niwao', text: 'おっと、リンクは<a>タグだぜ' },
+          { c: 'piyo', text: '<link>は別の用途で使うんだって！' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s7q2',
+        type: 'predict',
+        question: 'このリンクをクリックしたら何が起きる？',
+        code: '<a href="#contact">お問い合わせ</a>\n...\n<h2 id="contact">お問い合わせ</h2>',
+        choices: [
+          { text: '新しいページが開く', correct: false },
+          { text: '同じページの「お問い合わせ」のとこにジャンプ', correct: true },
+          { text: 'エラーになる', correct: false },
+          { text: '何も起きない', correct: false }
+        ],
+        correctComment: [
+          { c: 'cocco', text: 'すごーい！🎉' },
+          { c: 'niwao', text: '#をつけるとページ内の同じidのところに飛ぶんだ' }
+        ],
+        wrongComment: [
+          { c: 'niwao', text: '#から始まるのはページ内リンクだぜ' },
+          { c: 'piyo', text: 'id="contact"のところにジャンプするんだね！' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s7q3',
+        type: 'fill',
+        question: '空欄を埋めてリンクを完成させよう！',
+        code: '<a ____="https://example.com">サイトへ</a>',
+        answer: 'href',
+        acceptableAnswers: ['href'],
+        correctComment: [
+          { c: 'piyo', text: 'かんぺき！🎉' },
+          { c: 'niwao', text: 'href（hypertext reference）でリンク先を指定するんだ' }
+        ],
+        wrongComment: [
+          { c: 'piyo', text: 'ちがうよ〜' },
+          { c: 'niwao', text: 'リンク先を指定するのは href だぜ' }
+        ],
+        points: 15
+      }
+    ],
+
+    clearComment: [
+      { c: 'piyo', text: 'リンクも作れるようになった！' },
+      { c: 'cocco', text: '村のページから色んなとこに飛べるね！' }
+    ]
+  },
+
+  // -------------------------------------------------
+  // ステージ 1-8: 画像
+  // -------------------------------------------------
+  {
+    world: 1,
+    stage: 8,
+    title: '画像を表示しよう',
+    mdnUrl: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_images',
+    mdnTitle: 'Images in HTML',
+
+    opening: [
+      { c: 'cocco', text: 'ページに写真を載せたいな〜' },
+      { c: 'piyo', text: 'みんなの写真とか！かわいいやつ！' },
+      { c: 'niwao', text: '画像は <img> タグで表示できるぜ' }
+    ],
+
+    discovery: [
+      {
+        speaker: 'niwao',
+        text: '画像はこうやって書くんだ'
+      },
+      {
+        type: 'code',
+        content: '<img src="photo.jpg" alt="たまご村の写真">'
+      },
+      {
+        speaker: 'piyo',
+        text: 'あれ？終了タグがない！'
+      },
+      {
+        speaker: 'niwao',
+        text: '<img>は中身がないから終了タグがいらないんだ'
+      },
+      {
+        speaker: 'niwao',
+        text: 'こういうのを「自己閉じタグ」って言う'
+      },
+      {
+        type: 'point',
+        title: 'imgタグの属性',
+        content: 'src = 画像ファイルの場所\nalt = 画像が表示できないときの代わりの文字'
+      },
+      {
+        speaker: 'cocco',
+        text: 'altって絶対いるの？'
+      },
+      {
+        speaker: 'fukurou',
+        text: '目が見えない人は読み上げソフトでaltを聞くのじゃ'
+      },
+      {
+        speaker: 'fukurou',
+        text: 'とても大事な属性じゃぞ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'みんなに優しいページを作りたいね！'
+      }
+    ],
+
+    gameIntro: [
+      { c: 'cocco', text: '画像タグ、わかるかな〜？' }
+    ],
+
+    questions: [
+      {
+        id: 'w1s8q1',
+        type: 'fill',
+        question: '空欄を埋めて画像を表示しよう！',
+        code: '<___ src="cat.jpg" alt="ねこの写真">',
+        answer: 'img',
+        acceptableAnswers: ['img'],
+        correctComment: [
+          { c: 'piyo', text: 'やった〜！🎉' },
+          { c: 'niwao', text: 'img = image（画像）の略だな' }
+        ],
+        wrongComment: [
+          { c: 'niwao', text: '画像は <img> タグだぜ' },
+          { c: 'piyo', text: 'imageの略でimgなんだって！' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s8q2',
+        type: 'choice',
+        question: 'alt属性はなんのためにある？',
+        choices: [
+          { text: '画像を大きくするため', correct: false },
+          { text: '画像が表示できないとき用の説明文', correct: true },
+          { text: '画像の場所を指定するため', correct: false },
+          { text: '画像をリンクにするため', correct: false }
+        ],
+        correctComment: [
+          { c: 'fukurou', text: 'その通りじゃ！🎉' },
+          { c: 'fukurou', text: '読み上げソフトにも使われる大事な属性じゃ' },
+          { c: 'piyo', text: 'みんなに優しいページになるね！' }
+        ],
+        wrongComment: [
+          { c: 'fukurou', text: 'altは「代替テキスト」というものじゃ' },
+          { c: 'piyo', text: '画像が見れない人のための説明文なんだね' }
+        ],
+        points: 10
+      }
+    ],
+
+    clearComment: [
+      { c: 'cocco', text: '画像も表示できるようになった〜！' },
+      { c: 'piyo', text: '村のかわいい写真を載せよう！' }
+    ]
+  },
+
+  // -------------------------------------------------
+  // ステージ 1-9: フォーム
+  // -------------------------------------------------
+  {
+    world: 1,
+    stage: 9,
+    title: 'フォームを作ろう',
+    mdnUrl: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_forms',
+    mdnTitle: 'Web forms',
+
+    opening: [
+      { c: 'piyo', text: 'お問い合わせフォーム作りたいな！' },
+      { c: 'cocco', text: '名前とかメール入れるやつだよね' },
+      { c: 'niwao', text: 'ちょっと複雑だけど、基本を覚えれば大丈夫だ' }
+    ],
+
+    discovery: [
+      {
+        speaker: 'niwao',
+        text: 'フォームはこんな感じで書くんだ'
+      },
+      {
+        type: 'code',
+        content: '<form>\n  <label for="name">名前</label>\n  <input type="text" id="name">\n  \n  <label for="email">メール</label>\n  <input type="email" id="email">\n  \n  <button type="submit">送信</button>\n</form>'
+      },
+      {
+        speaker: 'piyo',
+        text: 'labelとinputがセットになってる？'
+      },
+      {
+        speaker: 'niwao',
+        text: 'いいとこ気づいたな！'
+      },
+      {
+        type: 'point',
+        title: 'labelとinputの紐づけ',
+        content: 'labelのfor属性 と inputのid属性 を同じにする！\n\n<label for="email">  ←┐\n<input id="email">   ←┘ 同じ！'
+      },
+      {
+        speaker: 'cocco',
+        text: 'なんで紐づけるの？'
+      },
+      {
+        speaker: 'fukurou',
+        text: 'ラベルをクリックしたら入力欄にフォーカスが当たるのじゃ'
+      },
+      {
+        speaker: 'fukurou',
+        text: 'これも読み上げソフトで大事な役割をするぞ'
+      },
+      {
+        speaker: 'niwao',
+        text: 'ちなみにfor属性はidを参照する。classじゃないぞ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'for → id！覚えた！'
+      }
+    ],
+
+    gameIntro: [
+      { c: 'niwao', text: 'フォームクイズ、ちょっと難しいぞ！' }
+    ],
+
+    questions: [
+      {
+        id: 'w1s9q1',
+        type: 'choice',
+        question: '<label for="email"> に紐づく <input> はどれ？',
+        code: '<label for="email">メールアドレス</label>\n\nA: <input type="text" class="email">\nB: <input type="email" id="email">\nC: <input type="email" name="email">\nD: <input type="email" for="email">',
+        choices: [
+          { text: 'A: class="email"', correct: false },
+          { text: 'B: id="email"', correct: true },
+          { text: 'C: name="email"', correct: false },
+          { text: 'D: for="email"', correct: false }
+        ],
+        correctComment: [
+          { c: 'niwao', text: 'おお、正解！🎉' },
+          { c: 'niwao', text: 'forはidを参照するんだ。classやnameじゃないぞ' },
+          { c: 'piyo', text: 'for → id の組み合わせ！' }
+        ],
+        wrongComment: [
+          { c: 'niwao', text: 'おっと、for属性はidを参照するんだ' },
+          { c: 'piyo', text: 'classでもnameでもなくて、idなんだね！' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s9q2',
+        type: 'choice',
+        question: 'for属性はclassとidのどっちを参照する？',
+        choices: [
+          { text: 'class', correct: false },
+          { text: 'id', correct: true },
+          { text: 'name', correct: false },
+          { text: 'どれでもいい', correct: false }
+        ],
+        correctComment: [
+          { c: 'piyo', text: 'バッチリ！🎉' },
+          { c: 'niwao', text: 'for → id の組み合わせを覚えておくといいぜ' }
+        ],
+        wrongComment: [
+          { c: 'niwao', text: 'for属性はidを参照するんだ' },
+          { c: 'piyo', text: 'これ大事だから覚えよう！' }
+        ],
+        points: 10
+      },
+      {
+        id: 'w1s9q3',
+        type: 'predict',
+        question: 'type="email" の入力欄に「あいうえお」と入れて送信ボタンを押すと？',
+        choices: [
+          { text: '普通に送信される', correct: false },
+          { text: 'メールアドレスの形式じゃないとエラーになる', correct: true },
+          { text: '自動的にメールが送られる', correct: false },
+          { text: '何も起きない', correct: false }
+        ],
+        correctComment: [
+          { c: 'cocco', text: 'すご〜い！🎉' },
+          { c: 'niwao', text: 'type="email"は@が含まれてないとエラーになるんだ' },
+          { c: 'piyo', text: 'ブラウザがチェックしてくれるんだね！' }
+        ],
+        wrongComment: [
+          { c: 'niwao', text: 'type="email"は入力チェック機能があるんだ' },
+          { c: 'piyo', text: '@がないとエラーになるよ！' }
+        ],
+        points: 10
+      }
+    ],
+
+    clearComment: [
+      { c: 'niwao', text: 'フォームもクリアか、やるじゃん！' },
+      { c: 'piyo', text: 'お問い合わせページが作れるね！' }
+    ]
+  },
+
+  // -------------------------------------------------
+  // ステージ 1-10: まとめチャレンジ
+  // -------------------------------------------------
+  {
+    world: 1,
+    stage: 10,
+    title: 'HTMLまとめチャレンジ！',
+    mdnUrl: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content',
+    mdnTitle: 'Structuring content with HTML',
+
+    opening: [
+      { c: 'piyo', text: 'HTML編、最後のチャレンジだよ！' },
+      { c: 'cocco', text: '今まで覚えたこと全部使うんだね' },
+      { c: 'niwao', text: '自信持っていこうぜ！' },
+      { c: 'fukurou', text: 'ここまでよく頑張ったのう' }
+    ],
+
+    discovery: [
+      {
+        speaker: 'fukurou',
+        text: 'ここまで学んだことを振り返ってみよう'
+      },
+      {
+        type: 'point',
+        title: 'HTML編で学んだこと',
+        content: '✅ タグで挟む、終了タグには/\n✅ head=裏方、body=表舞台\n✅ h1〜h6の見出し、pで段落\n✅ strong/emで意味のある強調\n✅ ul/olでリスト、liが中身\n✅ header/nav/main/footerで構造化\n✅ aでリンク、hrefで飛び先\n✅ imgで画像、altは代替テキスト\n✅ formでフォーム、for→idで紐づけ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'いっぱい覚えたね〜！'
+      },
+      {
+        speaker: 'cocco',
+        text: '最後のチャレンジ、頑張ろう！'
+      }
+    ],
+
+    gameIntro: [
+      { c: 'piyo', text: '最終問題！実際のページを読み解こう！' }
+    ],
+
+    questions: [
+      {
+        id: 'w1s10q1',
+        type: 'predict',
+        question: 'このHTMLで、「お知らせ」のセクションに飛ぶリンクはどれ？',
+        code: '<nav>\n  <a href="#news">お知らせ</a>\n  <a href="#about">紹介</a>\n</nav>\n<main>\n  <section id="news">\n    <h2>お知らせ</h2>\n    <p>明日はお休みです</p>\n  </section>\n  <section id="about">\n    <h2>紹介</h2>\n    <p>たまご村です</p>\n  </section>\n</main>',
+        choices: [
+          { text: '<a href="#news">お知らせ</a>', correct: true },
+          { text: '<a href="#about">紹介</a>', correct: false },
+          { text: '<section id="news">', correct: false },
+          { text: '<h2>お知らせ</h2>', correct: false }
+        ],
+        correctComment: [
+          { c: 'piyo', text: '大正解！🎉🎉🎉' },
+          { c: 'fukurou', text: 'href="#news"が、id="news"のところに飛ぶのじゃ' },
+          { c: 'niwao', text: 'ページ内リンク、バッチリだな！' },
+          { c: 'cocco', text: 'HTMLマスターだね〜！' }
+        ],
+        wrongComment: [
+          { c: 'piyo', text: 'おしい！' },
+          { c: 'fukurou', text: '#news は id="news" のところに飛ぶリンクじゃ' },
+          { c: 'niwao', text: 'aタグのhref="#news"が答えだぜ' }
+        ],
+        points: 20
+      }
+    ],
+
+    clearComment: [
+      { c: 'piyo', text: 'やった〜〜〜！！！🎉🎉🎉' },
+      { c: 'cocco', text: 'HTML編クリアおめでとう！！' },
+      { c: 'niwao', text: 'よくやったな！' },
+      { c: 'fukurou', text: '立派なWebページの骨組みが作れるようになったのう' },
+      { c: 'piyo', text: '次はCSSでかわいくしていこう！' }
+    ]
+  }
+];
+
+// エクスポート
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { CHARACTERS, WORLDS, WORLD1_STAGES };
+}
