@@ -17,12 +17,13 @@ const state = {
   lastQuestionCorrect: null
 };
 
-// キャラクター進化の閾値
+// キャラクター進化の閾値（称号システム）
 const EVOLUTION = [
-  { min: 0, emoji: '🥚', name: 'たまご' },
-  { min: 16, emoji: '🐣', name: 'ひよこ' },
-  { min: 36, emoji: '🐥', name: 'こっこ' },
-  { min: 56, emoji: '🐓', name: 'にわとり' }
+  { min: 0, emoji: '🥚', name: 'ビギナー' },
+  { min: 10, emoji: '🌱', name: 'めばえ' },
+  { min: 20, emoji: '🌸', name: 'つぼみ' },
+  { min: 35, emoji: '🌟', name: 'きらめき' },
+  { min: 50, emoji: '👑', name: 'マスター' }
 ];
 
 // DOM要素のキャッシュ
@@ -894,12 +895,13 @@ function nextStage() {
 // ワールドクリア画面
 function showWorldClear() {
   const newChar = getCharacter();
-  const prevChar = EVOLUTION.find(e => e.min < newChar.min) || EVOLUTION[0];
+  const prevCharIndex = EVOLUTION.findIndex(e => e.emoji === newChar.emoji) - 1;
+  const prevChar = prevCharIndex >= 0 ? EVOLUTION[prevCharIndex] : null;
 
   elements.worldClearCharacter.textContent = newChar.emoji;
 
-  if (newChar.emoji !== prevChar.emoji) {
-    elements.worldClearMessage.textContent = `${prevChar.name}が${newChar.name}に進化した！`;
+  if (prevChar && prevChar.emoji !== newChar.emoji) {
+    elements.worldClearMessage.textContent = `称号「${newChar.name}」を獲得！`;
   } else {
     elements.worldClearMessage.textContent = `ワールド${state.currentWorld}クリア！`;
   }
