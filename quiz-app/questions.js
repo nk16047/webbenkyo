@@ -3,12 +3,17 @@
 // ===================================================
 
 // キャラクター定義
+// タマちゃん: 主人公、オノマトペのみで話す（わくわく、どきどき、きゅぴーん✨など）
+// ピヨちゃん: 元気いっぱい、語尾に「〜だよ！」「〜ね！」、「やった〜！」
+// コッコちゃん: おしゃれ好き、「かわいい〜」「素敵〜」、語尾「〜だわ」
+// ニワオ: 兄貴分だけどおっちょこちょい、「〜だぜ」「〜だな」
+// フクロウさん: 賢者、「〜じゃ」「〜のう」、ことわざや例えを使う
 const CHARACTERS = {
-  tama: { name: 'タマちゃん', emoji: '🥚', role: 'あなた' },
+  tama: { name: 'タマちゃん', emoji: '🥚', role: 'あなた（オノマトペだけで話す）' },
   piyo: { name: 'ピヨちゃん', emoji: '🐣', role: '元気いっぱいの友達' },
   cocco: { name: 'コッコちゃん', emoji: '🐥', role: 'おしゃれ好きな友達' },
-  niwao: { name: 'ニワオ', emoji: '🐓', role: 'ちょっとおっちょこちょい' },
-  fukurou: { name: 'フクロウさん', emoji: '🦉', role: '村のものしり' }
+  niwao: { name: 'ニワオ', emoji: '🐓', role: '頼れる兄貴分（たまにドジ）' },
+  fukurou: { name: 'フクロウさん', emoji: '🦉', role: '村のものしり博士' }
 };
 
 // ワールド定義
@@ -67,13 +72,13 @@ const WORLD1_STAGES = [
 
     // オープニング会話
     opening: [
-      { c: 'piyo', text: 'たいへんたいへーん！' },
-      { c: 'tama', text: 'どしたのピヨちゃん？' },
-      { c: 'piyo', text: '村のホームページ作ることになったんだけど、作り方知らないの！' },
-      { c: 'fukurou', text: 'ホッホッホ。HTMLというものを使うのじゃ' },
-      { c: 'piyo', text: 'えいちてぃーえむえる...？' },
-      { c: 'fukurou', text: 'まあ、やってみればわかるさ' },
-      { c: 'tama', text: 'わくわくしてきた！' }
+      { c: 'piyo', text: 'たいへんたいへーん！大変だよ〜！' },
+      { c: 'tama', text: 'え？え？' },
+      { c: 'piyo', text: '村のホームページ作ることになったんだけど、誰も作り方知らないの！' },
+      { c: 'fukurou', text: 'ホッホッホ。HTMLというものを使うのじゃ。千里の道も一歩からじゃ' },
+      { c: 'piyo', text: 'え、えいちてぃーえむえる...？なにそれ〜？' },
+      { c: 'fukurou', text: '百聞は一見にしかず。やってみればわかるさ' },
+      { c: 'tama', text: 'わくわく！' }
     ],
 
     // 発見パート
@@ -96,7 +101,7 @@ const WORLD1_STAGES = [
       },
       {
         speaker: 'tama',
-        text: '最後のやつには / がついてる！'
+        text: 'あ！きゅぴーん✨'
       },
       {
         type: 'point',
@@ -167,7 +172,7 @@ const WORLD1_STAGES = [
     gameIntro: [
       { c: 'piyo', text: 'じゃあさじゃあさ！' },
       { c: 'piyo', text: 'ちゃんとわかったかゲームしよ！' },
-      { c: 'tama', text: 'いいよ！やろやろ！' }
+      { c: 'tama', text: 'うんうん！' }
     ],
 
     // 問題
@@ -183,13 +188,13 @@ const WORLD1_STAGES = [
           { text: 'p>こんにちは</p>', correct: false }
         ],
         correctComment: [
-          { c: 'piyo', text: 'すごーい！正解！🎉' },
-          { c: 'piyo', text: 'タグで挟んで、終了タグには / ！完璧だね' }
+          { c: 'piyo', text: 'やった〜！大正解だよ！🎉' },
+          { c: 'piyo', text: 'タグで挟んで、終了タグには / ！完璧だね〜！' }
         ],
         wrongComment: [
-          { c: 'piyo', text: 'おしいっ！' },
-          { c: 'piyo', text: '終了タグには / が必要なんだ〜' },
-          { c: 'cocco', text: 'サンドイッチの両側のパン🥪を忘れずにね！' }
+          { c: 'piyo', text: 'あれれ？ちょっと違うかも〜' },
+          { c: 'piyo', text: '終了タグには / が必要なんだよ！' },
+          { c: 'cocco', text: 'サンドイッチ🥪みたいに、両側をパンで挟むイメージだわ〜' }
         ],
         points: 10
       },
@@ -522,7 +527,7 @@ const WORLD1_STAGES = [
 
     opening: [
       { c: 'piyo', text: 'ねえ、「期間限定！」とか目立たせたいな〜' },
-      { c: 'tama', text: '太字とか斜めの字にするやつ？' },
+      { c: 'tama', text: 'ふむふむ？' },
       { c: 'niwao', text: 'それにはいくつか方法があるんだ' }
     ],
 
@@ -1326,7 +1331,7 @@ const WORLD1_STAGES = [
 
     opening: [
       { c: 'piyo', text: 'HTML編、最後のチャレンジだよ！' },
-      { c: 'tama', text: '今まで覚えたこと全部使うんだね' },
+      { c: 'tama', text: 'どきどき...' },
       { c: 'fukurou', text: 'ここまでよく頑張ったのう。自信を持っていくのじゃ' }
     ],
 
@@ -1379,10 +1384,10 @@ const WORLD1_STAGES = [
     ],
 
     clearComment: [
-      { c: 'piyo', text: 'やった〜〜〜！！！🎉🎉🎉' },
-      { c: 'tama', text: 'HTML編クリアだ！' },
-      { c: 'fukurou', text: '立派なWebページの骨組みが作れるようになったのう' },
-      { c: 'piyo', text: '次はCSSでかわいくしていこう！' }
+      { c: 'piyo', text: 'やった〜〜〜！！！ HTML編クリアだよ〜！🎉🎉🎉' },
+      { c: 'tama', text: 'きらきら〜✨' },
+      { c: 'fukurou', text: '「継続は力なり」じゃ。よくぞここまで頑張ったのう' },
+      { c: 'cocco', text: '次はCSSで素敵にデコレーションするのよ〜✨' }
     ]
   }
 ];

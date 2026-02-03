@@ -38,6 +38,9 @@
           <p class="title-subtitle">たまご村のみんなと一緒に<br>Webページの作り方を発見しよう！</p>
           <button id="btn-start" class="btn btn-primary btn-large">はじめる</button>
           <button id="btn-continue" class="btn btn-secondary" style="display: none;">続きから</button>
+          <select id="stage-select" class="stage-select">
+            <option value="">ステージを選ぶ</option>
+          </select>
         </div>
       </section>
 
@@ -98,10 +101,16 @@
           <div id="result-comment" class="result-comment">
             <!-- コメントが動的に入る -->
           </div>
+          <div id="result-correct-answer" class="result-correct-answer" style="display: none;">
+            <!-- 正解が動的に入る -->
+          </div>
           <a id="result-mdn-link" class="mdn-link" href="#" target="_blank" style="display: none;">
             📖 MDNでもっと詳しく
           </a>
-          <button id="btn-next-question" class="btn btn-primary">次へ</button>
+          <div class="result-buttons">
+            <button id="btn-retry-question" class="btn btn-secondary" style="display: none;">もう一度</button>
+            <button id="btn-next-question" class="btn btn-primary">次へ</button>
+          </div>
         </div>
       </section>
 

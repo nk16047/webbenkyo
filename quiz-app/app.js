@@ -10,18 +10,57 @@ const state = {
   totalPoints: 0,
   correctCount: 0,
   stagePoints: 0,
-  answers: {},
+  answers: {},  // { 'w1s1q1': { correct: true, attempts: 1 } }
   stages: WORLD1_STAGES,
-  currentScreen: 'title'
+  currentScreen: 'title',
+  lastQuestion: null,  // 復習用に最後の問題を保存
+  lastQuestionCorrect: null
 };
 
-// キャラクター進化の閾値
+// ===================================================
+// ポイント・称号システム
+// ===================================================
+// 現在の仕様: 初回正解時のみポイント加算、ペナルティなし
+// 拡張ポイント:
+//   - recordAnswer() でポイント計算ロジックを集約
+//   - EVOLUTION で称号閾値を定義
+//   - 将来: 連続正解ボーナス、難易度係数、実績システム等
+
 const EVOLUTION = [
-  { min: 0, emoji: '🥚', name: 'たまご' },
-  { min: 16, emoji: '🐣', name: 'ひよこ' },
-  { min: 36, emoji: '🐥', name: 'こっこ' },
-  { min: 56, emoji: '🐓', name: 'にわとり' }
+  { min: 0, emoji: '🥚', name: 'ビギナー' },
+  { min: 10, emoji: '🌱', name: 'めばえ' },
+  { min: 20, emoji: '🌸', name: 'つぼみ' },
+  { min: 35, emoji: '🌟', name: 'きらめき' },
+  { min: 50, emoji: '👑', name: 'マスター' }
 ];
+
+// 回答を記録してポイント計算
+// 戻り値: { pointsEarned, isFirstCorrect, attempts }
+function recordAnswer(questionId, isCorrect, basePoints) {
+  const past = state.answers[questionId];
+  const wasCorrect = past?.correct;
+  const attempts = (past?.attempts || 0) + 1;
+
+  let pointsEarned = 0;
+  let isFirstCorrect = false;
+
+  if (isCorrect && !wasCorrect) {
+    // 初回正解: ポイント付与
+    pointsEarned = basePoints;
+    isFirstCorrect = true;
+    state.correctCount++;
+    state.totalPoints += pointsEarned;
+    state.stagePoints += pointsEarned;
+  }
+
+  // 回答履歴を更新
+  state.answers[questionId] = {
+    correct: isCorrect || wasCorrect,  // 一度正解したらtrue維持
+    attempts
+  };
+
+  return { pointsEarned, isFirstCorrect, attempts };
+}
 
 // DOM要素のキャッシュ
 const elements = {};
@@ -49,6 +88,7 @@ function cacheElements() {
   elements.btnDiscoveryNext = document.getElementById('btn-discovery-next');
   elements.btnStartGame = document.getElementById('btn-start-game');
   elements.btnNextQuestion = document.getElementById('btn-next-question');
+  elements.btnRetryQuestion = document.getElementById('btn-retry-question');
   elements.btnNextStage = document.getElementById('btn-next-stage');
   elements.btnNextWorld = document.getElementById('btn-next-world');
   elements.storyContent = document.getElementById('story-content');
@@ -62,6 +102,7 @@ function cacheElements() {
   elements.resultIcon = document.getElementById('result-icon');
   elements.resultTitle = document.getElementById('result-title');
   elements.resultComment = document.getElementById('result-comment');
+  elements.resultCorrectAnswer = document.getElementById('result-correct-answer');
   elements.resultMdnLink = document.getElementById('result-mdn-link');
   elements.clearComment = document.getElementById('clear-comment');
   elements.clearPoints = document.getElementById('clear-points');
@@ -69,6 +110,7 @@ function cacheElements() {
   elements.worldClearMessage = document.getElementById('world-clear-message');
   elements.worldClearComment = document.getElementById('world-clear-comment');
   elements.confettiContainer = document.getElementById('confetti-container');
+  elements.stageSelect = document.getElementById('stage-select');
 }
 
 // イベントリスナー設定
@@ -79,8 +121,23 @@ function setupEventListeners() {
   elements.btnDiscoveryNext.addEventListener('click', goToGameIntro);
   elements.btnStartGame.addEventListener('click', startQuiz);
   elements.btnNextQuestion.addEventListener('click', nextQuestion);
+  if (elements.btnRetryQuestion) {
+    elements.btnRetryQuestion.addEventListener('click', retryQuestion);
+  }
   elements.btnNextStage.addEventListener('click', nextStage);
   elements.btnNextWorld.addEventListener('click', nextWorld);
+
+  // ステージ選択
+  if (elements.stageSelect) {
+    elements.stageSelect.addEventListener('change', (e) => {
+      if (e.target.value !== '') {
+        state.currentStage = parseInt(e.target.value);
+        state.currentQuestion = 0;
+        state.stagePoints = 0;
+        startStage();
+      }
+    });
+  }
 }
 
 // キーボードショートカット
@@ -144,6 +201,9 @@ function loadProgress() {
       elements.btnContinue.style.display = 'block';
     }
   }
+
+  // ステージ選択を更新
+  updateStageSelect();
 }
 
 // 進捗を保存
@@ -158,6 +218,31 @@ function saveProgress() {
   localStorage.setItem('webtamago_progress', JSON.stringify(data));
 }
 
+// ステージ選択を更新
+function updateStageSelect() {
+  if (!elements.stageSelect) return;
+
+  elements.stageSelect.innerHTML = '<option value="">ステージを選ぶ</option>';
+  state.stages.forEach((stage, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+
+    // このステージの正解数をカウント
+    let correctInStage = 0;
+    let totalInStage = stage.questions.length;
+    stage.questions.forEach(q => {
+      if (state.answers[q.id] && state.answers[q.id].correct) {
+        correctInStage++;
+      }
+    });
+
+    const status = correctInStage === totalInStage ? '✅' :
+                   correctInStage > 0 ? `${correctInStage}/${totalInStage}` : '';
+    option.textContent = `${stage.stage}. ${stage.title} ${status}`;
+    elements.stageSelect.appendChild(option);
+  });
+}
+
 // UI更新
 function updateUI() {
   const stage = state.stages[state.currentStage];
@@ -165,14 +250,13 @@ function updateUI() {
     elements.worldStage.textContent = `ワールド${state.currentWorld} - ステージ${stage.stage}`;
   }
 
-  // プログレスバー
+  // プログレスバー（正解した問題数ベース）
   const totalQuestions = state.stages.reduce((sum, s) => sum + s.questions.length, 0);
-  let completedQuestions = 0;
-  for (let i = 0; i < state.currentStage; i++) {
-    completedQuestions += state.stages[i].questions.length;
-  }
-  completedQuestions += state.currentQuestion;
-  const progress = Math.round((completedQuestions / totalQuestions) * 100);
+  let correctQuestions = 0;
+  Object.values(state.answers).forEach(a => {
+    if (a.correct) correctQuestions++;
+  });
+  const progress = Math.round((correctQuestions / totalQuestions) * 100);
   elements.progressFill.style.width = progress + '%';
   elements.progressText.textContent = progress + '%';
 
@@ -183,6 +267,9 @@ function updateUI() {
   const character = getCharacter();
   elements.character.textContent = character.emoji;
   elements.footerCharacter.textContent = character.emoji;
+
+  // ステージ選択を更新
+  updateStageSelect();
 }
 
 // キャラクター取得
@@ -264,8 +351,13 @@ function showAllDiscoveries(container, discoveries) {
 
     if (d.type === 'code') {
       el = document.createElement('div');
-      el.className = 'code-block';
-      el.textContent = d.content;
+      el.className = 'code-wrapper';
+
+      // コードブロック
+      const codeEl = document.createElement('div');
+      codeEl.className = 'code-block';
+      codeEl.textContent = d.content;
+      el.appendChild(codeEl);
 
       // HTMLプレビューを追加（安全なHTMLのみ）
       if (shouldShowPreview(d.content)) {
@@ -306,6 +398,10 @@ function showAllDiscoveries(container, discoveries) {
 
 // HTMLプレビューを表示すべきか判定
 function shouldShowPreview(code) {
+  // 構造系タグは除外（プレビューしても意味がない）
+  const excludePatterns = ['<!DOCTYPE', '<html', '<head', '<body', '<meta', '<title>'];
+  if (excludePatterns.some(p => code.includes(p))) return false;
+
   // 単純なHTMLタグを含む場合のみプレビュー
   const previewableTags = ['<p>', '<h1>', '<h2>', '<h3>', '<h4>', '<h5>', '<h6>',
                            '<ul>', '<ol>', '<li>', '<strong>', '<em>', '<b>', '<i>'];
@@ -317,7 +413,7 @@ function createHtmlPreview(code) {
   const wrapper = document.createElement('div');
   wrapper.className = 'html-preview';
   wrapper.innerHTML = `
-    <div class="html-preview-label">👁 プレビュー</div>
+    <div class="html-preview-label">👁 ブラウザで見ると...</div>
     <div class="html-preview-content"></div>
   `;
 
@@ -331,8 +427,6 @@ function createHtmlPreview(code) {
 
 // 安全なHTMLタグのみ残す
 function sanitizeHtml(html) {
-  const allowedTags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li',
-                       'strong', 'em', 'b', 'i', 'br', 'a', 'span'];
   const temp = document.createElement('div');
   temp.innerHTML = html;
 
@@ -366,8 +460,21 @@ function showQuestion() {
   const stage = state.stages[state.currentStage];
   const question = stage.questions[state.currentQuestion];
 
+  // この問題の過去の回答状況を確認
+  const pastAnswer = state.answers[question.id];
+  const alreadyCorrect = pastAnswer && pastAnswer.correct;
+
   elements.quizNumber.textContent = `Q${state.currentQuestion + 1}`;
-  elements.quizPoints.textContent = `+${question.points}pt`;
+
+  // 既に正解済みならポイント表示を変える
+  if (alreadyCorrect) {
+    elements.quizPoints.textContent = '✅ 正解済み';
+    elements.quizPoints.style.color = 'var(--correct)';
+  } else {
+    elements.quizPoints.textContent = `+${question.points}pt`;
+    elements.quizPoints.style.color = '';
+  }
+
   elements.quizQuestion.textContent = question.question;
 
   // コードブロック
@@ -646,25 +753,42 @@ function renderMatchQuestion(question) {
 function showResult(isCorrect, question) {
   const stage = state.stages[state.currentStage];
 
-  if (isCorrect) {
-    state.correctCount++;
-    state.totalPoints += question.points;
-    state.stagePoints += question.points;
+  // 保存用
+  state.lastQuestion = question;
+  state.lastQuestionCorrect = isCorrect;
 
+  // 回答を記録（ポイント計算もここで）
+  const result = recordAnswer(question.id, isCorrect, question.points);
+
+  if (isCorrect) {
     elements.resultIcon.textContent = '🎉';
-    elements.resultTitle.textContent = '正解！';
+    elements.resultTitle.textContent = result.isFirstCorrect ? '正解！' : '復習OK！';
     elements.resultTitle.className = 'result-title correct';
 
     renderComments(elements.resultComment, question.correctComment);
 
-    // 紙吹雪
-    createConfetti();
+    // 正答表示は非表示
+    if (elements.resultCorrectAnswer) {
+      elements.resultCorrectAnswer.style.display = 'none';
+    }
+
+    // 初回正解時のみ紙吹雪
+    if (result.isFirstCorrect) {
+      createConfetti();
+    }
   } else {
     elements.resultIcon.textContent = '😊';
     elements.resultTitle.textContent = 'おしい！';
     elements.resultTitle.className = 'result-title wrong';
 
     renderComments(elements.resultComment, question.wrongComment);
+
+    // 正答を表示
+    if (elements.resultCorrectAnswer) {
+      const correctAnswerText = getCorrectAnswerText(question);
+      elements.resultCorrectAnswer.innerHTML = `<div class="correct-answer-box">💡 正解: ${escapeHtml(correctAnswerText)}</div>`;
+      elements.resultCorrectAnswer.style.display = 'block';
+    }
   }
 
   // MDNリンク
@@ -676,9 +800,40 @@ function showResult(isCorrect, question) {
     elements.resultMdnLink.style.display = 'none';
   }
 
+  // もう一度ボタンの表示
+  if (elements.btnRetryQuestion) {
+    elements.btnRetryQuestion.style.display = isCorrect ? 'none' : 'inline-block';
+  }
+
   saveProgress();
   updateUI();
   showScreen('result');
+}
+
+// 正答テキストを取得
+function getCorrectAnswerText(question) {
+  switch (question.type) {
+    case 'choice':
+    case 'predict':
+      const correct = question.choices.find(c => c.correct);
+      return correct ? correct.text : '';
+    case 'fill':
+      return question.answer || question.acceptableAnswers[0];
+    case 'sort':
+      return question.correctOrder.map((id, i) => {
+        const item = question.items.find(item => item.id === id);
+        return `${i+1}. ${item.text}`;
+      }).join('\n');
+    case 'match':
+      return question.pairs.map(p => `${p.item} → ${p.match}`).join('\n');
+    default:
+      return '';
+  }
+}
+
+// もう一度挑戦
+function retryQuestion() {
+  showQuestion();
 }
 
 // コメントを描画
@@ -719,7 +874,9 @@ function showStageClear() {
   const stage = state.stages[state.currentStage];
 
   renderComments(elements.clearComment, stage.clearComment);
-  elements.clearPoints.textContent = `+${state.stagePoints}pt 獲得！`;
+  elements.clearPoints.textContent = state.stagePoints > 0 ?
+    `+${state.stagePoints}pt 獲得！` :
+    '復習完了！';
 
   // 最後のステージかどうか
   if (state.currentStage >= state.stages.length - 1) {
@@ -750,12 +907,13 @@ function nextStage() {
 // ワールドクリア画面
 function showWorldClear() {
   const newChar = getCharacter();
-  const prevChar = EVOLUTION.find(e => e.min < newChar.min) || EVOLUTION[0];
+  const prevCharIndex = EVOLUTION.findIndex(e => e.emoji === newChar.emoji) - 1;
+  const prevChar = prevCharIndex >= 0 ? EVOLUTION[prevCharIndex] : null;
 
   elements.worldClearCharacter.textContent = newChar.emoji;
 
-  if (newChar.emoji !== prevChar.emoji) {
-    elements.worldClearMessage.textContent = `${prevChar.name}が${newChar.name}に進化した！`;
+  if (prevChar && prevChar.emoji !== newChar.emoji) {
+    elements.worldClearMessage.textContent = `称号「${newChar.name}」を獲得！`;
   } else {
     elements.worldClearMessage.textContent = `ワールド${state.currentWorld}クリア！`;
   }
