@@ -2,18 +2,18 @@
 // 🥚 Webのたまご - 問題データ
 // ===================================================
 
-// キャラクター定義
+// キャラクター定義と専門分野
 // タマちゃん: 主人公、オノマトペのみで話す（わくわく、どきどき、きゅぴーん✨など）
-// ピヨちゃん: 元気いっぱい、語尾に「〜だよ！」「〜ね！」、「やった〜！」
-// コッコちゃん: おしゃれ好き、「かわいい〜」「素敵〜」、語尾「〜だわ」
-// ニワオ: 兄貴分だけどおっちょこちょい、「〜だぜ」「〜だな」
-// フクロウさん: 賢者、「〜じゃ」「〜のう」、ことわざや例えを使う
+// ピヨちゃん: ナビゲーター、進行役・質問係、語尾「〜だよ！」「〜ね！」
+// コッコちゃん: CSS担当（ワールド2-3で活躍）、おしゃれ好き、語尾「〜だわ」
+// ニワオ: JavaScript担当（ワールド4-5で活躍）、「〜だぜ」「〜だな」
+// フクロウさん: HTML担当＋全体の先生、「〜じゃ」「〜のう」、ことわざを使う
 const CHARACTERS = {
   tama: { name: 'タマちゃん', emoji: '🥚', role: 'あなた（オノマトペだけで話す）' },
-  piyo: { name: 'ピヨちゃん', emoji: '🐣', role: '元気いっぱいの友達' },
-  cocco: { name: 'コッコちゃん', emoji: '🐥', role: 'おしゃれ好きな友達' },
-  niwao: { name: 'ニワオ', emoji: '🐓', role: '頼れる兄貴分（たまにドジ）' },
-  fukurou: { name: 'フクロウさん', emoji: '🦉', role: '村のものしり博士' }
+  piyo: { name: 'ピヨちゃん', emoji: '🐣', role: 'ナビゲーター' },
+  cocco: { name: 'コッコちゃん', emoji: '🐥', role: 'CSSの達人' },
+  niwao: { name: 'ニワオ', emoji: '🐓', role: 'JavaScriptの達人' },
+  fukurou: { name: 'フクロウさん', emoji: '🦉', role: 'HTMLの先生' }
 };
 
 // ワールド定義
@@ -72,61 +72,112 @@ const WORLD1_STAGES = [
 
     // オープニング会話
     opening: [
-      { c: 'piyo', text: 'たいへんたいへーん！大変だよ〜！' },
-      { c: 'tama', text: 'え？え？' },
-      { c: 'piyo', text: '村のホームページ作ることになったんだけど、誰も作り方知らないの！' },
-      { c: 'fukurou', text: 'ホッホッホ。HTMLというものを使うのじゃ。千里の道も一歩からじゃ' },
-      { c: 'piyo', text: 'え、えいちてぃーえむえる...？なにそれ〜？' },
-      { c: 'fukurou', text: '百聞は一見にしかず。やってみればわかるさ' },
-      { c: 'tama', text: 'わくわく！' }
+      { c: 'piyo', text: 'たいへんたいへーん！' },
+      { c: 'tama', text: 'わたわた！' },
+      { c: 'piyo', text: '村のホームページ作ることになったんだけど...誰も作り方知らないの！' },
+      { c: 'tama', text: 'おろおろ...' },
+      { c: 'piyo', text: 'タマちゃんも不安だよね。わたしもだよ〜' },
+      { c: 'fukurou', text: 'ホッホッホ。HTMLというものを使うのじゃ' },
+      { c: 'piyo', text: 'え、えいちてぃーえむえる...？' },
+      { c: 'fukurou', text: '千里の道も一歩から、じゃ。やってみればわかるさ' },
+      { c: 'tama', text: '...こくこく！' },
+      { c: 'piyo', text: 'タマちゃんやる気だ！わたしもがんばる！' }
     ],
 
-    // 発見パート
+    // 発見パート（タマ・ピヨ・フクロウの3人）
     discovery: [
       {
-        speaker: 'piyo',
-        text: 'フクロウさんに聞いたんだけどね、こうやって書くんだって！'
+        speaker: 'fukurou',
+        text: 'まずはHTMLの基本を見せてやろう'
       },
       {
         type: 'code',
         content: '<p>こんにちは</p>'
       },
       {
-        speaker: 'cocco',
+        speaker: 'piyo',
         text: 'サンドイッチみたい🥪 パンで具を挟んでる感じ？'
       },
       {
+        speaker: 'fukurou',
+        text: 'いい例えじゃな！<p>と</p>で「こんにちは」を挟んでおる'
+      },
+      {
         speaker: 'piyo',
-        text: 'あ！ほんとだ！最初と最後ので挟むんだね'
+        text: 'じゃあこれでもいいの？'
+      },
+      {
+        type: 'code',
+        content: '<p>こんにちは'
       },
       {
         speaker: 'tama',
-        text: 'あ！きゅぴーん✨'
+        text: 'あわわ...？'
+      },
+      {
+        speaker: 'fukurou',
+        text: 'タマちゃん、いい勘じゃ。これはダメなんじゃ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'えっ、なんで？'
+      },
+      {
+        speaker: 'fukurou',
+        text: '終了タグ </p> がないと、どこまでが段落かわからんのじゃ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'あー！サンドイッチの下のパンがない！'
+      },
+      {
+        speaker: 'tama',
+        text: 'ぐしゃっ...🥪💦'
+      },
+      {
+        speaker: 'piyo',
+        text: 'あはは、タマちゃん想像しちゃった？'
       },
       {
         type: 'point',
         title: 'タグのきほん',
-        content: '<開始タグ>中身</終了タグ>\n終了タグには / がつく！'
-      },
-      {
-        speaker: 'niwao',
-        text: 'ちなみに p は paragraph（段落）の略だぜ'
+        content: '<開始タグ>中身</終了タグ>\n終了タグには / がつく！\n\n✗ <p>こんにちは ← 閉じ忘れ\n○ <p>こんにちは</p> ← ちゃんと挟む'
       },
       {
         speaker: 'fukurou',
-        text: 'タグには「属性」をつけて追加情報を与えることもできるぞ'
+        text: 'ちなみに p は paragraph（段落）の略じゃ'
+      },
+      {
+        speaker: 'tama',
+        text: 'もじもじ...'
+      },
+      {
+        speaker: 'piyo',
+        text: 'ん？タマちゃんどうしたの？'
+      },
+      {
+        speaker: 'tama',
+        text: '...ちらっ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'あ、href="..."ってやつが気になる？わたしも気になってた！'
+      },
+      {
+        speaker: 'tama',
+        text: 'こくこく！'
+      },
+      {
+        speaker: 'fukurou',
+        text: 'よく気づいたのう。それは「属性」というものじゃ'
       },
       {
         type: 'code',
         content: '<a href="https://example.com">リンク</a>'
       },
       {
-        speaker: 'piyo',
-        text: 'href="..."ってのが属性？'
-      },
-      {
         speaker: 'fukurou',
-        text: 'その通り。属性名="値" の形で、タグに情報を追加するのじゃ'
+        text: '属性名="値" の形で、タグに追加情報を与えるのじゃ'
       },
       {
         type: 'point',
@@ -134,7 +185,7 @@ const WORLD1_STAGES = [
         content: '<タグ 属性名="値">中身</タグ>\n例: href="..." はリンク先を指定する属性'
       },
       {
-        speaker: 'cocco',
+        speaker: 'piyo',
         text: 'ところでさ、ページ全体ってどうなってるの？'
       },
       {
@@ -154,8 +205,8 @@ const WORLD1_STAGES = [
         text: '<!DOCTYPE html>は「これはHTMLだよ」という宣言じゃ'
       },
       {
-        speaker: 'niwao',
-        text: '<head>は裏方の設定、<body>は画面に出る部分だな'
+        speaker: 'fukurou',
+        text: '<head>は裏方の設定、<body>は画面に出る部分じゃな'
       },
       {
         type: 'point',
@@ -164,15 +215,19 @@ const WORLD1_STAGES = [
       },
       {
         speaker: 'piyo',
-        text: '頭(head)が先で、体(body)が後なんだね！覚えやすい！'
+        text: '頭(head)が先で、体(body)が後！覚えやすい！'
+      },
+      {
+        speaker: 'tama',
+        text: 'ふむふむ！'
       }
     ],
 
     // ゲーム導入
     gameIntro: [
-      { c: 'piyo', text: 'じゃあさじゃあさ！' },
-      { c: 'piyo', text: 'ちゃんとわかったかゲームしよ！' },
-      { c: 'tama', text: 'うんうん！' }
+      { c: 'piyo', text: 'よーし、ちゃんとわかったかクイズだよ！' },
+      { c: 'tama', text: 'どきどき...' },
+      { c: 'piyo', text: '大丈夫！さっき一緒に勉強したもんね！' }
     ],
 
     // 問題
@@ -188,13 +243,14 @@ const WORLD1_STAGES = [
           { text: 'p>こんにちは</p>', correct: false }
         ],
         correctComment: [
-          { c: 'piyo', text: 'やった〜！大正解だよ！🎉' },
-          { c: 'piyo', text: 'タグで挟んで、終了タグには / ！完璧だね〜！' }
+          { c: 'tama', text: 'きゅぴーん✨' },
+          { c: 'piyo', text: 'タマちゃんすごい！サンドイッチ覚えてたんだね🥪' },
+          { c: 'fukurou', text: '終了タグの / も見逃さなかったのう' }
         ],
         wrongComment: [
-          { c: 'piyo', text: 'あれれ？ちょっと違うかも〜' },
-          { c: 'piyo', text: '終了タグには / が必要なんだよ！' },
-          { c: 'cocco', text: 'サンドイッチ🥪みたいに、両側をパンで挟むイメージだわ〜' }
+          { c: 'piyo', text: 'あれれ？もう一回見てみよ！' },
+          { c: 'fukurou', text: 'サンドイッチを思い出すのじゃ🥪 上下のパンで挟むように、タグで挟むんじゃ' },
+          { c: 'tama', text: 'はっ！' }
         ],
         points: 10
       },
@@ -210,14 +266,14 @@ const WORLD1_STAGES = [
           { text: '</a>', correct: false }
         ],
         correctComment: [
-          { c: 'niwao', text: 'おお、正解だ！' },
-          { c: 'niwao', text: '属性はタグに追加情報を与えるやつな' },
-          { c: 'piyo', text: 'href="..." みたいに書くんだね〜' }
+          { c: 'piyo', text: '正解！🎉 さっきタマちゃんが気になってたやつだね！' },
+          { c: 'tama', text: 'えへへ' },
+          { c: 'fukurou', text: '属性名="値" の形、バッチリじゃ' }
         ],
         wrongComment: [
-          { c: 'niwao', text: 'ちょっと違うな〜' },
-          { c: 'niwao', text: '<a>はタグ、「リンク」は中身だぜ' },
-          { c: 'piyo', text: '属性は href="..." の部分だよ！' }
+          { c: 'fukurou', text: 'ちょっと違うのう' },
+          { c: 'piyo', text: '<a>はタグ、「リンク」は中身だよ〜' },
+          { c: 'fukurou', text: '属性は href="..." の部分じゃ。タグに追加情報をくっつけるんじゃ' }
         ],
         points: 10
       },
@@ -234,14 +290,14 @@ const WORLD1_STAGES = [
         ],
         correctOrder: ['c', 'd', 'e', 'b', 'a'],
         correctComment: [
-          { c: 'piyo', text: 'すっご〜い！完璧！🎉' },
-          { c: 'fukurou', text: 'DOCTYPE → html → head → body → /html の順じゃな' },
-          { c: 'piyo', text: '頭(head)が先で、体(body)が後なんだね！' }
+          { c: 'piyo', text: 'すっご〜い！完璧だよタマちゃん！🎉' },
+          { c: 'tama', text: 'やったー！' },
+          { c: 'fukurou', text: '頭(head)が先で、体(body)が後。よく覚えておったのう' }
         ],
         wrongComment: [
-          { c: 'piyo', text: 'あれれ？ちょっと順番が違うかも' },
+          { c: 'piyo', text: 'おしい！順番がちょっと違うかも' },
           { c: 'fukurou', text: '最初は必ず <!DOCTYPE html> で始まるのじゃ' },
-          { c: 'fukurou', text: 'HTMLの自己紹介みたいなものじゃな' }
+          { c: 'piyo', text: '「私はHTMLです！」って自己紹介から始めるんだね' }
         ],
         points: 15
       }
@@ -249,9 +305,10 @@ const WORLD1_STAGES = [
 
     // クリア時
     clearComment: [
-      { c: 'piyo', text: 'やった〜！全部できたね！' },
-      { c: 'cocco', text: 'HTMLの基本、バッチリだ〜' },
-      { c: 'piyo', text: '次はもっと詳しく見ていこ！' }
+      { c: 'piyo', text: 'タマちゃん、全問正解〜！🎉🎉' },
+      { c: 'tama', text: 'きらきら〜✨' },
+      { c: 'fukurou', text: '最初はおろおろしておったが、もう立派なものじゃ' },
+      { c: 'piyo', text: 'ね！一緒にがんばったもんね！次もいこ！' }
     ]
   },
 
@@ -267,17 +324,17 @@ const WORLD1_STAGES = [
 
     opening: [
       { c: 'piyo', text: 'ねえねえ、さっき出てきた <head> ってなんだろ？' },
-      { c: 'niwao', text: 'あー、あれはページの「裏方さん」だな' },
-      { c: 'cocco', text: '裏方さん...？' },
-      { c: 'niwao', text: 'ブラウザのタブに出る名前とか、文字化け防止とか' },
-      { c: 'niwao', text: '画面には見えないけど大事な設定を書くとこだ' },
+      { c: 'fukurou', text: 'あれはページの「裏方さん」じゃな' },
+      { c: 'piyo', text: '裏方さん...？' },
+      { c: 'fukurou', text: 'ブラウザのタブに出る名前とか、文字化け防止とか' },
+      { c: 'fukurou', text: '画面には見えないけど大事な設定を書くところじゃ' },
       { c: 'piyo', text: 'へ〜！見えないところで頑張ってるんだね' }
     ],
 
     discovery: [
       {
-        speaker: 'niwao',
-        text: 'headの中にはこういうのを書くんだ'
+        speaker: 'fukurou',
+        text: 'headの中にはこういうのを書くのじゃ'
       },
       {
         type: 'code',
@@ -288,20 +345,20 @@ const WORLD1_STAGES = [
         text: '<title>ってなに？'
       },
       {
-        speaker: 'niwao',
-        text: 'ブラウザのタブに出る名前だぜ'
+        speaker: 'fukurou',
+        text: 'ブラウザのタブに出る名前じゃ'
       },
       {
         type: 'image',
         description: 'ブラウザタブのイメージ: 🐔 たまご村 ✕'
       },
       {
-        speaker: 'cocco',
+        speaker: 'piyo',
         text: 'あ〜！上のちっちゃいとこに出るやつね！'
       },
       {
-        speaker: 'niwao',
-        text: '<meta charset="UTF-8"> は文字化け防止のおまじない✨'
+        speaker: 'fukurou',
+        text: '<meta charset="UTF-8"> は文字化け防止のおまじない✨じゃ'
       },
       {
         type: 'point',
@@ -331,13 +388,11 @@ const WORLD1_STAGES = [
         ],
         correctComment: [
           { c: 'piyo', text: 'ピンポーン！🎉' },
-          { c: 'niwao', text: '<h1>は画面に出る見出しで、<title>はタブに出る名前な' },
-          { c: 'piyo', text: '似てるけど違うんだね〜' }
+          { c: 'fukurou', text: '<h1>は画面に出る見出し、<title>はタブに出る名前じゃ' }
         ],
         wrongComment: [
-          { c: 'niwao', text: 'おっと、違うぜ〜' },
-          { c: 'niwao', text: '<title>がタブに出る名前だ' },
-          { c: 'piyo', text: '<header>はまた別のやつなんだって！' }
+          { c: 'fukurou', text: 'おっと、違うのう' },
+          { c: 'fukurou', text: '<title>がタブに出る名前じゃ。<header>はまた別のものじゃよ' }
         ],
         points: 10
       },
@@ -353,12 +408,12 @@ const WORLD1_STAGES = [
         ],
         categories: ['head', 'body'],
         correctComment: [
-          { c: 'cocco', text: 'やった〜！全部合ってる！' },
-          { c: 'piyo', text: '裏方(head)と表舞台(body)、バッチリだね！' }
+          { c: 'piyo', text: 'やった〜！全部合ってる！🎉' },
+          { c: 'fukurou', text: '裏方(head)と表舞台(body)、バッチリじゃな' }
         ],
         wrongComment: [
           { c: 'piyo', text: 'あれれ？ちょっと混ざっちゃったかな' },
-          { c: 'niwao', text: '画面に見えるやつはbody、見えない設定はheadだぜ' }
+          { c: 'fukurou', text: '画面に見えるやつはbody、見えない設定はheadじゃ' }
         ],
         points: 15
       }
@@ -366,7 +421,7 @@ const WORLD1_STAGES = [
 
     clearComment: [
       { c: 'piyo', text: 'headとbody、もう完璧だね！' },
-      { c: 'niwao', text: '次は画面に見える部分を詳しくやるぜ' }
+      { c: 'fukurou', text: '次は画面に見える部分を詳しくやるぞ' }
     ]
   },
 
@@ -381,16 +436,15 @@ const WORLD1_STAGES = [
     mdnTitle: 'Headings and paragraphs',
 
     opening: [
-      { c: 'cocco', text: 'ねえ、村のページにタイトルつけたいな〜' },
-      { c: 'piyo', text: '「たまご村へようこそ！」みたいな？' },
-      { c: 'cocco', text: 'そうそう！大きい文字でドーンって！' },
-      { c: 'niwao', text: 'それには「見出し」タグを使うんだぜ' }
+      { c: 'piyo', text: 'ねえ、村のページにタイトルつけたいな〜' },
+      { c: 'piyo', text: '「たまご村へようこそ！」みたいな、大きい文字でドーンって！' },
+      { c: 'fukurou', text: 'それには「見出し」タグを使うのじゃ' }
     ],
 
     discovery: [
       {
-        speaker: 'niwao',
-        text: '見出しは <h1> から <h6> まであるんだ'
+        speaker: 'fukurou',
+        text: '見出しは <h1> から <h6> まであるんじゃ'
       },
       {
         type: 'code',
@@ -401,11 +455,11 @@ const WORLD1_STAGES = [
         text: 'hって何の略？'
       },
       {
-        speaker: 'niwao',
-        text: 'heading（見出し）のhだな'
+        speaker: 'fukurou',
+        text: 'heading（見出し）のhじゃ'
       },
       {
-        speaker: 'cocco',
+        speaker: 'piyo',
         text: '数字が小さいほど大きいんだね！'
       },
       {
@@ -430,7 +484,7 @@ const WORLD1_STAGES = [
         text: 'その通り。本の章立てと同じじゃな'
       },
       {
-        speaker: 'cocco',
+        speaker: 'piyo',
         text: '第1章の次は第2章、いきなり第3章にならないもんね！'
       }
     ],
@@ -452,12 +506,11 @@ const WORLD1_STAGES = [
         ],
         correctComment: [
           { c: 'piyo', text: '正解！🎉 h1が一番でっかいやつ！' },
-          { c: 'niwao', text: '数字が小さいほど大きいんだよな' }
+          { c: 'fukurou', text: '数字が小さいほど大きいのじゃ' }
         ],
         wrongComment: [
           { c: 'piyo', text: 'ちがうよ〜！' },
-          { c: 'niwao', text: 'h1が一番大きくて、h6が一番小さいんだ' },
-          { c: 'piyo', text: '数字と大きさが逆なの、ちょっとややこしいよね' }
+          { c: 'fukurou', text: 'h1が一番大きくて、h6が一番小さいのじゃ' }
         ],
         points: 10
       },
@@ -473,14 +526,12 @@ const WORLD1_STAGES = [
           { text: 'h3は使っちゃダメ', correct: false }
         ],
         correctComment: [
-          { c: 'cocco', text: 'さすが〜！よく見てるね！' },
-          { c: 'fukurou', text: 'h1の次はh2、その次がh3の順番じゃな' },
-          { c: 'piyo', text: '飛ばしちゃダメなんだよね〜' }
+          { c: 'piyo', text: 'さすが〜！よく見てるね！🎉' },
+          { c: 'fukurou', text: 'h1の次はh2、その次がh3の順番じゃな' }
         ],
         wrongComment: [
           { c: 'fukurou', text: 'よく見てみるのじゃ' },
-          { c: 'fukurou', text: 'h1 → h3 と、h2を飛ばしておるな' },
-          { c: 'piyo', text: '順番通りに使わないといけないんだね！' }
+          { c: 'fukurou', text: 'h1 → h3 と、h2を飛ばしておるな' }
         ],
         points: 10
       },
@@ -497,21 +548,19 @@ const WORLD1_STAGES = [
         ],
         correctComment: [
           { c: 'piyo', text: 'あったり〜！🎉' },
-          { c: 'piyo', text: 'h2は見出しだから大きく出て' },
-          { c: 'piyo', text: 'pは段落だから普通の大きさなんだね！' }
+          { c: 'fukurou', text: 'h2は見出しだから大きく、pは段落だから普通サイズじゃ' }
         ],
         wrongComment: [
           { c: 'piyo', text: 'う〜ん、そうじゃないんだ〜' },
-          { c: 'niwao', text: '<h2>は見出しだから大きく表示される' },
-          { c: 'niwao', text: '<p>は段落だから普通サイズだぜ' }
+          { c: 'fukurou', text: '<h2>は見出しだから大きく表示されるのじゃ' }
         ],
         points: 10
       }
     ],
 
     clearComment: [
-      { c: 'cocco', text: '見出しマスターだね！' },
-      { c: 'piyo', text: '村のページ、かっこよくなりそう！' }
+      { c: 'piyo', text: '見出しマスターだね！' },
+      { c: 'fukurou', text: '村のページ、かっこよくなりそうじゃな' }
     ]
   },
 
@@ -528,12 +577,12 @@ const WORLD1_STAGES = [
     opening: [
       { c: 'piyo', text: 'ねえ、「期間限定！」とか目立たせたいな〜' },
       { c: 'tama', text: 'ふむふむ？' },
-      { c: 'niwao', text: 'それにはいくつか方法があるんだ' }
+      { c: 'fukurou', text: 'それにはいくつか方法があるのじゃ' }
     ],
 
     discovery: [
       {
-        speaker: 'niwao',
+        speaker: 'fukurou',
         text: '「これ大事！」って意味を込めるなら <strong> を使う'
       },
       {
@@ -541,20 +590,20 @@ const WORLD1_STAGES = [
         content: '<p>この商品は<strong>期間限定</strong>です！</p>'
       },
       {
-        speaker: 'cocco',
+        speaker: 'piyo',
         text: 'strong...強いってこと？'
       },
       {
-        speaker: 'niwao',
-        text: 'そう！「ここ大事だよ！」って意味になる'
+        speaker: 'fukurou',
+        text: 'そう！「ここ大事だよ！」って意味になるのじゃ'
       },
       {
         speaker: 'piyo',
         text: '他にもあるの？'
       },
       {
-        speaker: 'niwao',
-        text: '「強調したい」ときは <em> だな'
+        speaker: 'fukurou',
+        text: '「強調したい」ときは <em> じゃな'
       },
       {
         type: 'code',
@@ -565,8 +614,8 @@ const WORLD1_STAGES = [
         text: 'em...？'
       },
       {
-        speaker: 'niwao',
-        text: 'emphasis（強調）の略だ'
+        speaker: 'fukurou',
+        text: 'emphasis（強調）の略じゃ'
       },
       {
         type: 'point',
@@ -574,12 +623,12 @@ const WORLD1_STAGES = [
         content: '<strong> = 「これ大事！」重要な情報（太字になる）\n<em> = 「ここ強めに読んで！」強調（斜体になる）\n\n<b> = ただ太字にするだけ\n<i> = ただ斜体にするだけ'
       },
       {
-        speaker: 'cocco',
+        speaker: 'piyo',
         text: '見た目は同じでも意味が違うんだね〜'
       },
       {
-        speaker: 'niwao',
-        text: 'ちなみにstrongは「強い」じゃなくて「重大」って意味な'
+        speaker: 'fukurou',
+        text: 'ちなみにstrongは「強い」じゃなくて「重大」って意味じゃ'
       },
       {
         speaker: 'piyo',
@@ -595,7 +644,7 @@ const WORLD1_STAGES = [
     ],
 
     gameIntro: [
-      { c: 'cocco', text: 'よーし！違いがわかるかな？' }
+      { c: 'piyo', text: 'よーし！違いがわかるかな？' }
     ],
 
     questions: [
@@ -610,14 +659,12 @@ const WORLD1_STAGES = [
           { text: '<big>', correct: false }
         ],
         correctComment: [
-          { c: 'niwao', text: '正解！🎉' },
-          { c: 'niwao', text: '<strong>は「重要」って意味があるんだ' },
-          { c: 'cocco', text: '<b>はただ太くするだけなんだね〜' }
+          { c: 'piyo', text: '正解！🎉' },
+          { c: 'fukurou', text: '<strong>は「重要」って意味があるのじゃ。<b>はただ太くするだけじゃ' }
         ],
         wrongComment: [
-          { c: 'niwao', text: 'おっと〜' },
-          { c: 'niwao', text: '<b>は見た目を太くするだけ' },
-          { c: 'niwao', text: '「意味」を込めたいなら<strong>だぜ' }
+          { c: 'fukurou', text: 'おっと〜' },
+          { c: 'fukurou', text: '<b>は見た目を太くするだけ。「意味」を込めたいなら<strong>じゃ' }
         ],
         points: 10
       },
@@ -633,22 +680,20 @@ const WORLD1_STAGES = [
           { text: '<em>は古い書き方', correct: false }
         ],
         correctComment: [
-          { c: 'cocco', text: 'すご〜い！わかってる！🎉' },
-          { c: 'fukurou', text: '<em>はemphasis、強調の意味があるのじゃ' },
-          { c: 'piyo', text: '見た目じゃなくて意味で選ぶんだね！' }
+          { c: 'piyo', text: 'すご〜い！わかってる！🎉' },
+          { c: 'fukurou', text: '<em>はemphasis、強調の意味があるのじゃ' }
         ],
         wrongComment: [
           { c: 'piyo', text: 'う〜ん、ちょっと違うかも' },
-          { c: 'niwao', text: '<em>は「強調」って意味がある' },
-          { c: 'niwao', text: '<i>はただ斜体にするだけなんだ' }
+          { c: 'fukurou', text: '<em>は「強調」って意味がある。<i>はただ斜体にするだけじゃ' }
         ],
         points: 10
       }
     ],
 
     clearComment: [
-      { c: 'cocco', text: '意味と見た目の違い、わかったね！' },
-      { c: 'piyo', text: 'HTMLって奥が深いなあ〜' }
+      { c: 'piyo', text: '意味と見た目の違い、わかったね！' },
+      { c: 'fukurou', text: 'HTMLは奥が深いのう' }
     ]
   },
 
@@ -664,15 +709,14 @@ const WORLD1_STAGES = [
 
     opening: [
       { c: 'piyo', text: '買い物メモをページに書きたいな〜' },
-      { c: 'cocco', text: '・たまご ・牛乳 ・パン みたいな？' },
-      { c: 'piyo', text: 'そうそう！箇条書きってやつ！' },
-      { c: 'niwao', text: 'それは「リスト」タグを使うんだぜ' }
+      { c: 'piyo', text: '・たまご ・牛乳 ・パン みたいな箇条書き！' },
+      { c: 'fukurou', text: 'それは「リスト」タグを使うのじゃ' }
     ],
 
     discovery: [
       {
-        speaker: 'niwao',
-        text: 'リストには2種類あるんだ'
+        speaker: 'fukurou',
+        text: 'リストには2種類あるんじゃ'
       },
       {
         type: 'point',
@@ -680,8 +724,8 @@ const WORLD1_STAGES = [
         content: '<ul> = 順序なしリスト（・で始まる）\n<ol> = 順序ありリスト（1. 2. 3.で始まる）'
       },
       {
-        speaker: 'niwao',
-        text: '買い物リストは順番関係ないから <ul> だな'
+        speaker: 'fukurou',
+        text: '買い物リストは順番関係ないから <ul> じゃな'
       },
       {
         type: 'code',
@@ -692,16 +736,16 @@ const WORLD1_STAGES = [
         text: '<li>ってなに？'
       },
       {
-        speaker: 'niwao',
-        text: 'list item（リストの項目）の略だ'
+        speaker: 'fukurou',
+        text: 'list item（リストの項目）の略じゃ'
       },
       {
-        speaker: 'cocco',
+        speaker: 'piyo',
         text: 'じゃあ順番が大事なやつは？'
       },
       {
-        speaker: 'niwao',
-        text: 'レシピの手順とかは <ol> を使う'
+        speaker: 'fukurou',
+        text: 'レシピの手順とかは <ol> を使うのじゃ'
       },
       {
         type: 'code',
@@ -712,8 +756,8 @@ const WORLD1_STAGES = [
         text: 'こっちは1. 2. 3.って番号がつくんだね！'
       },
       {
-        speaker: 'niwao',
-        text: 'ul = unordered（順序なし）、ol = ordered（順序あり）だ'
+        speaker: 'fukurou',
+        text: 'ul = unordered（順序なし）、ol = ordered（順序あり）じゃ'
       }
     ],
 
@@ -734,13 +778,11 @@ const WORLD1_STAGES = [
         ],
         correctComment: [
           { c: 'piyo', text: '正解！🎉' },
-          { c: 'niwao', text: '順番関係ない買い物リストは<ul>だな' },
-          { c: 'piyo', text: '中身は<li>で囲むんだよね！' }
+          { c: 'fukurou', text: '順番関係ない買い物リストは<ul>、中身は<li>で囲むのじゃ' }
         ],
         wrongComment: [
-          { c: 'niwao', text: 'おっと〜' },
-          { c: 'niwao', text: '順番がないリストは<ul>、中身は<li>で囲むんだ' },
-          { c: 'piyo', text: '<list>とか<item>は存在しないタグだよ〜' }
+          { c: 'fukurou', text: 'おっと〜' },
+          { c: 'fukurou', text: '順番がないリストは<ul>、中身は<li>で囲むのじゃ' }
         ],
         points: 10
       },
@@ -755,13 +797,12 @@ const WORLD1_STAGES = [
           { text: '<menu>', correct: false }
         ],
         correctComment: [
-          { c: 'cocco', text: 'ピンポーン！🎉' },
-          { c: 'cocco', text: '手順は順番が大事だもんね〜' },
-          { c: 'niwao', text: 'ol = ordered（順序あり）だ！' }
+          { c: 'piyo', text: 'ピンポーン！🎉 手順は順番が大事だもんね〜' },
+          { c: 'fukurou', text: 'ol = ordered（順序あり）じゃ！' }
         ],
         wrongComment: [
           { c: 'piyo', text: 'う〜ん、レシピの手順は順番が大事だよね？' },
-          { c: 'niwao', text: '順番ありは <ol> を使うんだ' }
+          { c: 'fukurou', text: '順番ありは <ol> を使うのじゃ' }
         ],
         points: 10
       },
@@ -778,11 +819,11 @@ const WORLD1_STAGES = [
         correctOrder: ['c', 'b', 'd', 'a'],
         correctComment: [
           { c: 'piyo', text: 'かんぺき！🎉' },
-          { c: 'piyo', text: '<ul>で始まって、<li>が中にあって、</ul>で終わる！' }
+          { c: 'fukurou', text: '<ul>で始まって、<li>が中にあって、</ul>で終わるのじゃ' }
         ],
         wrongComment: [
           { c: 'piyo', text: 'あれれ？' },
-          { c: 'niwao', text: '<ul>で始まって、中に<li>を入れて、</ul>で閉じるんだ' }
+          { c: 'fukurou', text: '<ul>で始まって、中に<li>を入れて、</ul>で閉じるのじゃ' }
         ],
         points: 15
       }
@@ -790,7 +831,7 @@ const WORLD1_STAGES = [
 
     clearComment: [
       { c: 'piyo', text: 'リストもバッチリだね！' },
-      { c: 'cocco', text: 'お買い物メモが作れるようになった〜' }
+      { c: 'fukurou', text: 'お買い物メモが作れるようになったのう' }
     ]
   },
 
@@ -915,7 +956,7 @@ const WORLD1_STAGES = [
         ],
         categories: ['ページ上部', 'ページ下部', 'メインコンテンツ', 'ナビゲーション'],
         correctComment: [
-          { c: 'cocco', text: 'パーフェクト！🎉' },
+          { c: 'piyo', text: 'パーフェクト！🎉' },
           { c: 'fukurou', text: 'ページの構造、バッチリじゃな' }
         ],
         wrongComment: [
@@ -944,14 +985,14 @@ const WORLD1_STAGES = [
 
     opening: [
       { c: 'piyo', text: '他のページにジャンプするやつ作りたい！' },
-      { c: 'cocco', text: 'クリックしたら飛ぶやつね！' },
-      { c: 'niwao', text: 'それは「リンク」ってやつだな' }
+      { c: 'piyo', text: 'クリックしたら飛ぶやつ！' },
+      { c: 'fukurou', text: 'それは「リンク」というものじゃ' }
     ],
 
     discovery: [
       {
-        speaker: 'niwao',
-        text: 'リンクは <a> タグで作るんだ'
+        speaker: 'fukurou',
+        text: 'リンクは <a> タグで作るのじゃ'
       },
       {
         type: 'code',
@@ -962,16 +1003,16 @@ const WORLD1_STAGES = [
         text: 'aって何の略？'
       },
       {
-        speaker: 'niwao',
-        text: 'anchor（アンカー、錨）の略だ'
+        speaker: 'fukurou',
+        text: 'anchor（アンカー、錨）の略じゃな'
       },
       {
-        speaker: 'cocco',
+        speaker: 'piyo',
         text: 'hrefってのは？'
       },
       {
-        speaker: 'niwao',
-        text: 'hypertext reference、つまり「どこに飛ぶか」の指定だな'
+        speaker: 'fukurou',
+        text: 'hypertext reference、つまり「どこに飛ぶか」の指定じゃ'
       },
       {
         type: 'point',
@@ -983,8 +1024,8 @@ const WORLD1_STAGES = [
         text: '同じページの中でジャンプとかできる？'
       },
       {
-        speaker: 'niwao',
-        text: 'できるぜ！#を使うんだ'
+        speaker: 'fukurou',
+        text: 'できるぞ！#を使うのじゃ'
       },
       {
         type: 'code',
@@ -995,8 +1036,8 @@ const WORLD1_STAGES = [
         text: 'idをつけたところに#で飛べるんだ！'
       },
       {
-        speaker: 'niwao',
-        text: 'そう！ページ内リンクってやつだな'
+        speaker: 'fukurou',
+        text: 'そうじゃ！ページ内リンクというものじゃな'
       }
     ],
 
@@ -1017,11 +1058,11 @@ const WORLD1_STAGES = [
         ],
         correctComment: [
           { c: 'piyo', text: '正解！🎉' },
-          { c: 'niwao', text: 'aはanchor（アンカー）の略だ' },
+          { c: 'fukurou', text: 'aはanchor（アンカー）の略じゃ' },
           { c: 'piyo', text: '<link>じゃないの意外だよね〜' }
         ],
         wrongComment: [
-          { c: 'niwao', text: 'おっと、リンクは<a>タグだぜ' },
+          { c: 'fukurou', text: 'おっと、リンクは<a>タグじゃ' },
           { c: 'piyo', text: '<link>は別の用途で使うんだって！' }
         ],
         points: 10
@@ -1038,11 +1079,11 @@ const WORLD1_STAGES = [
           { text: '何も起きない', correct: false }
         ],
         correctComment: [
-          { c: 'cocco', text: 'すごーい！🎉' },
-          { c: 'niwao', text: '#をつけるとページ内の同じidのところに飛ぶんだ' }
+          { c: 'piyo', text: 'すごーい！🎉' },
+          { c: 'fukurou', text: '#をつけるとページ内の同じidのところに飛ぶのじゃ' }
         ],
         wrongComment: [
-          { c: 'niwao', text: '#から始まるのはページ内リンクだぜ' },
+          { c: 'fukurou', text: '#から始まるのはページ内リンクじゃ' },
           { c: 'piyo', text: 'id="contact"のところにジャンプするんだね！' }
         ],
         points: 10
@@ -1056,11 +1097,11 @@ const WORLD1_STAGES = [
         acceptableAnswers: ['href'],
         correctComment: [
           { c: 'piyo', text: 'かんぺき！🎉' },
-          { c: 'niwao', text: 'href（hypertext reference）でリンク先を指定するんだ' }
+          { c: 'fukurou', text: 'href（hypertext reference）でリンク先を指定するのじゃ' }
         ],
         wrongComment: [
           { c: 'piyo', text: 'ちがうよ〜' },
-          { c: 'niwao', text: 'リンク先を指定するのは href だぜ' }
+          { c: 'fukurou', text: 'リンク先を指定するのは href じゃ' }
         ],
         points: 15
       }
@@ -1068,7 +1109,7 @@ const WORLD1_STAGES = [
 
     clearComment: [
       { c: 'piyo', text: 'リンクも作れるようになった！' },
-      { c: 'cocco', text: '村のページから色んなとこに飛べるね！' }
+      { c: 'fukurou', text: '村のページから色んなとこに飛べるようになったのう' }
     ]
   },
 
@@ -1083,15 +1124,15 @@ const WORLD1_STAGES = [
     mdnTitle: 'Images in HTML',
 
     opening: [
-      { c: 'cocco', text: 'ページに写真を載せたいな〜' },
+      { c: 'piyo', text: 'ページに写真を載せたいな〜' },
       { c: 'piyo', text: 'みんなの写真とか！かわいいやつ！' },
-      { c: 'niwao', text: '画像は <img> タグで表示できるぜ' }
+      { c: 'fukurou', text: '画像は <img> タグで表示できるのじゃ' }
     ],
 
     discovery: [
       {
-        speaker: 'niwao',
-        text: '画像はこうやって書くんだ'
+        speaker: 'fukurou',
+        text: '画像はこうやって書くのじゃ'
       },
       {
         type: 'code',
@@ -1102,12 +1143,12 @@ const WORLD1_STAGES = [
         text: 'あれ？終了タグがない！'
       },
       {
-        speaker: 'niwao',
-        text: '<img>は中身がないから終了タグがいらないんだ'
+        speaker: 'fukurou',
+        text: '<img>は中身がないから終了タグがいらないのじゃ'
       },
       {
-        speaker: 'niwao',
-        text: 'こういうのを「自己閉じタグ」って言う'
+        speaker: 'fukurou',
+        text: 'こういうのを「自己閉じタグ」と言う'
       },
       {
         type: 'point',
@@ -1115,7 +1156,7 @@ const WORLD1_STAGES = [
         content: 'src = 画像ファイルの場所\nalt = 画像が表示できないときの代わりの文字'
       },
       {
-        speaker: 'cocco',
+        speaker: 'piyo',
         text: 'altって絶対いるの？'
       },
       {
@@ -1133,7 +1174,7 @@ const WORLD1_STAGES = [
     ],
 
     gameIntro: [
-      { c: 'cocco', text: '画像タグ、わかるかな〜？' }
+      { c: 'piyo', text: '画像タグ、わかるかな〜？' }
     ],
 
     questions: [
@@ -1146,10 +1187,10 @@ const WORLD1_STAGES = [
         acceptableAnswers: ['img'],
         correctComment: [
           { c: 'piyo', text: 'やった〜！🎉' },
-          { c: 'niwao', text: 'img = image（画像）の略だな' }
+          { c: 'fukurou', text: 'img = image（画像）の略じゃな' }
         ],
         wrongComment: [
-          { c: 'niwao', text: '画像は <img> タグだぜ' },
+          { c: 'fukurou', text: '画像は <img> タグじゃ' },
           { c: 'piyo', text: 'imageの略でimgなんだって！' }
         ],
         points: 10
@@ -1178,8 +1219,8 @@ const WORLD1_STAGES = [
     ],
 
     clearComment: [
-      { c: 'cocco', text: '画像も表示できるようになった〜！' },
-      { c: 'piyo', text: '村のかわいい写真を載せよう！' }
+      { c: 'piyo', text: '画像も表示できるようになった〜！' },
+      { c: 'fukurou', text: '村のかわいい写真を載せるといいのう' }
     ]
   },
 
@@ -1195,14 +1236,14 @@ const WORLD1_STAGES = [
 
     opening: [
       { c: 'piyo', text: 'お問い合わせフォーム作りたいな！' },
-      { c: 'cocco', text: '名前とかメール入れるやつだよね' },
-      { c: 'niwao', text: 'ちょっと複雑だけど、基本を覚えれば大丈夫だ' }
+      { c: 'piyo', text: '名前とかメール入れるやつ！' },
+      { c: 'fukurou', text: 'ちょっと複雑じゃが、基本を覚えれば大丈夫じゃ' }
     ],
 
     discovery: [
       {
-        speaker: 'niwao',
-        text: 'フォームはこんな感じで書くんだ'
+        speaker: 'fukurou',
+        text: 'フォームはこんな感じで書くのじゃ'
       },
       {
         type: 'code',
@@ -1213,8 +1254,8 @@ const WORLD1_STAGES = [
         text: 'labelとinputがセットになってる？'
       },
       {
-        speaker: 'niwao',
-        text: 'いいとこ気づいたな！'
+        speaker: 'fukurou',
+        text: 'いいとこに気づいたのう！'
       },
       {
         type: 'point',
@@ -1222,7 +1263,7 @@ const WORLD1_STAGES = [
         content: 'labelのfor属性 と inputのid属性 を同じにする！\n\n<label for="email">  ←┐\n<input id="email">   ←┘ 同じ！'
       },
       {
-        speaker: 'cocco',
+        speaker: 'piyo',
         text: 'なんで紐づけるの？'
       },
       {
@@ -1234,7 +1275,7 @@ const WORLD1_STAGES = [
         text: 'これも読み上げソフトで大事な役割をするぞ'
       },
       {
-        speaker: 'niwao',
+        speaker: 'fukurou',
         text: 'ちなみにfor属性はidを参照する。classじゃないぞ'
       },
       {
@@ -1244,7 +1285,7 @@ const WORLD1_STAGES = [
     ],
 
     gameIntro: [
-      { c: 'niwao', text: 'フォームクイズ、ちょっと難しいぞ！' }
+      { c: 'fukurou', text: 'フォームクイズじゃ、ちょっと難しいぞ！' }
     ],
 
     questions: [
@@ -1260,12 +1301,12 @@ const WORLD1_STAGES = [
           { text: 'D: for="email"', correct: false }
         ],
         correctComment: [
-          { c: 'niwao', text: 'おお、正解！🎉' },
-          { c: 'niwao', text: 'forはidを参照するんだ。classやnameじゃないぞ' },
+          { c: 'piyo', text: 'おお、正解！🎉' },
+          { c: 'fukurou', text: 'forはidを参照するのじゃ。classやnameじゃないぞ' },
           { c: 'piyo', text: 'for → id の組み合わせ！' }
         ],
         wrongComment: [
-          { c: 'niwao', text: 'おっと、for属性はidを参照するんだ' },
+          { c: 'fukurou', text: 'おっと、for属性はidを参照するのじゃ' },
           { c: 'piyo', text: 'classでもnameでもなくて、idなんだね！' }
         ],
         points: 10
@@ -1282,10 +1323,10 @@ const WORLD1_STAGES = [
         ],
         correctComment: [
           { c: 'piyo', text: 'バッチリ！🎉' },
-          { c: 'niwao', text: 'for → id の組み合わせを覚えておくといいぜ' }
+          { c: 'fukurou', text: 'for → id の組み合わせを覚えておくとよいぞ' }
         ],
         wrongComment: [
-          { c: 'niwao', text: 'for属性はidを参照するんだ' },
+          { c: 'fukurou', text: 'for属性はidを参照するのじゃ' },
           { c: 'piyo', text: 'これ大事だから覚えよう！' }
         ],
         points: 10
@@ -1301,12 +1342,12 @@ const WORLD1_STAGES = [
           { text: '何も起きない', correct: false }
         ],
         correctComment: [
-          { c: 'cocco', text: 'すご〜い！🎉' },
-          { c: 'niwao', text: 'type="email"は@が含まれてないとエラーになるんだ' },
+          { c: 'piyo', text: 'すご〜い！🎉' },
+          { c: 'fukurou', text: 'type="email"は@が含まれてないとエラーになるのじゃ' },
           { c: 'piyo', text: 'ブラウザがチェックしてくれるんだね！' }
         ],
         wrongComment: [
-          { c: 'niwao', text: 'type="email"は入力チェック機能があるんだ' },
+          { c: 'fukurou', text: 'type="email"は入力チェック機能があるのじゃ' },
           { c: 'piyo', text: '@がないとエラーになるよ！' }
         ],
         points: 10
@@ -1314,7 +1355,7 @@ const WORLD1_STAGES = [
     ],
 
     clearComment: [
-      { c: 'niwao', text: 'フォームもクリアか、やるじゃん！' },
+      { c: 'fukurou', text: 'フォームもクリアか、やるのう！' },
       { c: 'piyo', text: 'お問い合わせページが作れるね！' }
     ]
   },
@@ -1350,8 +1391,8 @@ const WORLD1_STAGES = [
         text: 'いっぱい覚えたね〜！'
       },
       {
-        speaker: 'cocco',
-        text: '最後のチャレンジ、頑張ろう！'
+        speaker: 'fukurou',
+        text: '最後のチャレンジ、頑張るのじゃ！'
       }
     ],
 
@@ -1387,7 +1428,7 @@ const WORLD1_STAGES = [
       { c: 'piyo', text: 'やった〜〜〜！！！ HTML編クリアだよ〜！🎉🎉🎉' },
       { c: 'tama', text: 'きらきら〜✨' },
       { c: 'fukurou', text: '「継続は力なり」じゃ。よくぞここまで頑張ったのう' },
-      { c: 'cocco', text: '次はCSSで素敵にデコレーションするのよ〜✨' }
+      { c: 'piyo', text: '次はCSSで素敵にデコレーションするよ〜！' }
     ]
   }
 ];
