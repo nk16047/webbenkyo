@@ -517,30 +517,11 @@ body {
 /* 並べ替え問題 */
 .sort-container {
   display: flex;
-  gap: 8px;
-}
-
-.sort-numbers {
-  display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.sort-number {
-  width: 32px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--accent);
-  color: white;
-  border-radius: var(--radius-sm);
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-
 .sort-items {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -583,6 +564,20 @@ body {
   0% { transform: scale(1); }
   50% { transform: scale(1.05); background: #FFF5EB; }
   100% { transform: scale(1); }
+}
+
+.sort-item-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 0.9rem;
+  flex-shrink: 0;
 }
 
 .sort-item-text {

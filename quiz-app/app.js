@@ -634,29 +634,25 @@ function renderSortQuestion(question) {
   const wrapper = document.createElement('div');
   wrapper.className = 'sort-container';
 
-  // 左側に固定の番号列
-  const numbersCol = document.createElement('div');
-  numbersCol.className = 'sort-numbers';
-  question.items.forEach((_, index) => {
-    const numEl = document.createElement('div');
-    numEl.className = 'sort-number';
-    numEl.textContent = index + 1;
-    numbersCol.appendChild(numEl);
-  });
-
-  // 右側にドラッグ可能なアイテム
+  // ドラッグ可能なアイテム
   const itemsContainer = document.createElement('div');
   itemsContainer.className = 'sort-items';
 
   // シャッフルした配列を作成
   const shuffled = [...question.items].sort(() => Math.random() - 0.5);
 
+  // ラベル（a, b, c, d, e...）を生成
+  const labels = 'abcdefghij'.split('');
+
   shuffled.forEach((item) => {
     const itemEl = document.createElement('div');
     itemEl.className = 'sort-item';
     itemEl.draggable = true;
     itemEl.dataset.id = item.id;
-    itemEl.innerHTML = `<span class="sort-item-text">${escapeHtml(item.text)}</span>`;
+    // ラベルをアイテムにくっつける（アイテムIDからラベルを取得）
+    const labelIndex = question.items.findIndex(i => i.id === item.id);
+    const label = labels[labelIndex] || item.id;
+    itemEl.innerHTML = `<span class="sort-item-label">${label}</span><span class="sort-item-text">${escapeHtml(item.text)}</span>`;
 
     // ドラッグ&ドロップ
     itemEl.addEventListener('dragstart', (e) => {
@@ -723,7 +719,6 @@ function renderSortQuestion(question) {
     itemsContainer.appendChild(itemEl);
   });
 
-  wrapper.appendChild(numbersCol);
   wrapper.appendChild(itemsContainer);
 
   const submitBtn = document.createElement('button');
