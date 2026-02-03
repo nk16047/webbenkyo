@@ -11,11 +11,19 @@
     <!-- ヘッダー -->
     <header class="header">
       <div class="header-left">
+        <button id="btn-home" class="btn-home" title="トップへ">🥚</button>
         <span class="logo">Webのたまご</span>
-        <span id="character" class="character">🥚</span>
       </div>
+      <nav class="header-nav">
+        <select id="nav-stage-select" class="nav-select">
+          <option value="">ステージ</option>
+        </select>
+        <select id="nav-question-select" class="nav-select">
+          <option value="">問題</option>
+        </select>
+      </nav>
       <div class="header-right">
-        <span id="world-stage" class="world-stage">ワールド1 - ステージ1</span>
+        <span id="character" class="character">🥚</span>
       </div>
     </header>
 
@@ -38,9 +46,7 @@
           <p class="title-subtitle">たまご村のみんなと一緒に<br>Webページの作り方を発見しよう！</p>
           <button id="btn-start" class="btn btn-primary btn-large">はじめる</button>
           <button id="btn-continue" class="btn btn-secondary" style="display: none;">続きから</button>
-          <select id="stage-select" class="stage-select">
-            <option value="">ステージを選ぶ</option>
-          </select>
+          <p class="title-hint">↑ ヘッダーからいつでもステージ・問題を選べるよ</p>
         </div>
       </section>
 

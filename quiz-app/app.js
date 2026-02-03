@@ -77,7 +77,6 @@ function init() {
 // DOM要素をキャッシュ
 function cacheElements() {
   elements.character = document.getElementById('character');
-  elements.worldStage = document.getElementById('world-stage');
   elements.progressFill = document.getElementById('progress-fill');
   elements.progressText = document.getElementById('progress-text');
   elements.totalPoints = document.getElementById('total-points');
@@ -110,7 +109,10 @@ function cacheElements() {
   elements.worldClearMessage = document.getElementById('world-clear-message');
   elements.worldClearComment = document.getElementById('world-clear-comment');
   elements.confettiContainer = document.getElementById('confetti-container');
-  elements.stageSelect = document.getElementById('stage-select');
+  // ナビゲーション
+  elements.btnHome = document.getElementById('btn-home');
+  elements.navStageSelect = document.getElementById('nav-stage-select');
+  elements.navQuestionSelect = document.getElementById('nav-question-select');
 }
 
 // イベントリスナー設定
@@ -127,16 +129,15 @@ function setupEventListeners() {
   elements.btnNextStage.addEventListener('click', nextStage);
   elements.btnNextWorld.addEventListener('click', nextWorld);
 
-  // ステージ選択
-  if (elements.stageSelect) {
-    elements.stageSelect.addEventListener('change', (e) => {
-      if (e.target.value !== '') {
-        state.currentStage = parseInt(e.target.value);
-        state.currentQuestion = 0;
-        state.stagePoints = 0;
-        startStage();
-      }
-    });
+  // ヘッダーナビゲーション
+  if (elements.btnHome) {
+    elements.btnHome.addEventListener('click', goToTitle);
+  }
+  if (elements.navStageSelect) {
+    elements.navStageSelect.addEventListener('change', handleNavStageChange);
+  }
+  if (elements.navQuestionSelect) {
+    elements.navQuestionSelect.addEventListener('change', handleNavQuestionChange);
   }
 }
 
@@ -218,11 +219,13 @@ function saveProgress() {
   localStorage.setItem('webtamago_progress', JSON.stringify(data));
 }
 
-// ステージ選択を更新
-function updateStageSelect() {
-  if (!elements.stageSelect) return;
+// ナビゲーション：ステージ選択を更新
+function updateNavStageSelect() {
+  if (!elements.navStageSelect) return;
 
-  elements.stageSelect.innerHTML = '<option value="">ステージを選ぶ</option>';
+  const currentValue = elements.navStageSelect.value;
+  elements.navStageSelect.innerHTML = '<option value="">ステージ</option>';
+
   state.stages.forEach((stage, index) => {
     const option = document.createElement('option');
     option.value = index;
@@ -231,25 +234,70 @@ function updateStageSelect() {
     let correctInStage = 0;
     let totalInStage = stage.questions.length;
     stage.questions.forEach(q => {
-      if (state.answers[q.id] && state.answers[q.id].correct) {
-        correctInStage++;
-      }
+      if (state.answers[q.id]?.correct) correctInStage++;
     });
 
     const status = correctInStage === totalInStage ? '✅' :
                    correctInStage > 0 ? `${correctInStage}/${totalInStage}` : '';
     option.textContent = `${stage.stage}. ${stage.title} ${status}`;
-    elements.stageSelect.appendChild(option);
+
+    if (index === state.currentStage) {
+      option.selected = true;
+    }
+    elements.navStageSelect.appendChild(option);
   });
+}
+
+// ナビゲーション：問題選択を更新
+function updateNavQuestionSelect() {
+  if (!elements.navQuestionSelect) return;
+
+  const stage = state.stages[state.currentStage];
+  elements.navQuestionSelect.innerHTML = '<option value="">問題</option>';
+
+  if (!stage) return;
+
+  stage.questions.forEach((q, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+
+    const answered = state.answers[q.id];
+    const status = answered?.correct ? '✅' : answered ? '❌' : '';
+    option.textContent = `Q${index + 1} ${status}`;
+
+    if (index === state.currentQuestion) {
+      option.selected = true;
+    }
+    elements.navQuestionSelect.appendChild(option);
+  });
+}
+
+// ナビゲーション：ステージ変更ハンドラ
+function handleNavStageChange(e) {
+  if (e.target.value === '') return;
+
+  state.currentStage = parseInt(e.target.value);
+  state.currentQuestion = 0;
+  state.stagePoints = 0;
+  startStage();
+}
+
+// ナビゲーション：問題変更ハンドラ
+function handleNavQuestionChange(e) {
+  if (e.target.value === '') return;
+
+  state.currentQuestion = parseInt(e.target.value);
+  showQuestion();
+}
+
+// トップ画面に戻る
+function goToTitle() {
+  showScreen('title');
+  updateUI();
 }
 
 // UI更新
 function updateUI() {
-  const stage = state.stages[state.currentStage];
-  if (stage) {
-    elements.worldStage.textContent = `ワールド${state.currentWorld} - ステージ${stage.stage}`;
-  }
-
   // プログレスバー（正解した問題数ベース）
   const totalQuestions = state.stages.reduce((sum, s) => sum + s.questions.length, 0);
   let correctQuestions = 0;
@@ -268,8 +316,9 @@ function updateUI() {
   elements.character.textContent = character.emoji;
   elements.footerCharacter.textContent = character.emoji;
 
-  // ステージ選択を更新
-  updateStageSelect();
+  // ナビゲーション更新
+  updateNavStageSelect();
+  updateNavQuestionSelect();
 }
 
 // キャラクター取得
