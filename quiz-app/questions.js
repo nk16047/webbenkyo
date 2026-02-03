@@ -72,20 +72,23 @@ const WORLD1_STAGES = [
 
     // オープニング会話
     opening: [
-      { c: 'piyo', text: 'たいへんたいへーん！大変だよ〜！' },
-      { c: 'tama', text: 'え？え？' },
-      { c: 'piyo', text: '村のホームページ作ることになったんだけど、誰も作り方知らないの！' },
-      { c: 'fukurou', text: 'ホッホッホ。HTMLというものを使うのじゃ。千里の道も一歩からじゃ' },
-      { c: 'piyo', text: 'え、えいちてぃーえむえる...？なにそれ〜？' },
-      { c: 'fukurou', text: '百聞は一見にしかず。やってみればわかるさ' },
-      { c: 'tama', text: 'わくわく！' }
+      { c: 'piyo', text: 'たいへんたいへーん！' },
+      { c: 'tama', text: 'わたわた！' },
+      { c: 'piyo', text: '村のホームページ作ることになったんだけど...誰も作り方知らないの！' },
+      { c: 'tama', text: 'おろおろ...' },
+      { c: 'piyo', text: 'タマちゃんも不安だよね。わたしもだよ〜' },
+      { c: 'fukurou', text: 'ホッホッホ。HTMLというものを使うのじゃ' },
+      { c: 'piyo', text: 'え、えいちてぃーえむえる...？' },
+      { c: 'fukurou', text: '千里の道も一歩から、じゃ。やってみればわかるさ' },
+      { c: 'tama', text: '...こくこく！' },
+      { c: 'piyo', text: 'タマちゃんやる気だ！わたしもがんばる！' }
     ],
 
     // 発見パート（タマ・ピヨ・フクロウの3人）
     discovery: [
       {
-        speaker: 'piyo',
-        text: 'フクロウさんに聞いたんだけどね、こうやって書くんだって！'
+        speaker: 'fukurou',
+        text: 'まずはHTMLの基本を見せてやろう'
       },
       {
         type: 'code',
@@ -97,36 +100,84 @@ const WORLD1_STAGES = [
       },
       {
         speaker: 'fukurou',
-        text: 'いい例えじゃな。最初と最後のタグで中身を挟むのじゃ'
+        text: 'いい例えじゃな！<p>と</p>で「こんにちは」を挟んでおる'
+      },
+      {
+        speaker: 'piyo',
+        text: 'じゃあこれでもいいの？'
+      },
+      {
+        type: 'code',
+        content: '<p>こんにちは'
       },
       {
         speaker: 'tama',
-        text: 'あ！きゅぴーん✨'
+        text: 'あわわ...？'
+      },
+      {
+        speaker: 'fukurou',
+        text: 'タマちゃん、いい勘じゃ。これはダメなんじゃ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'えっ、なんで？'
+      },
+      {
+        speaker: 'fukurou',
+        text: '終了タグ </p> がないと、どこまでが段落かわからんのじゃ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'あー！サンドイッチの下のパンがない！'
+      },
+      {
+        speaker: 'tama',
+        text: 'ぐしゃっ...🥪💦'
+      },
+      {
+        speaker: 'piyo',
+        text: 'あはは、タマちゃん想像しちゃった？'
       },
       {
         type: 'point',
         title: 'タグのきほん',
-        content: '<開始タグ>中身</終了タグ>\n終了タグには / がつく！'
+        content: '<開始タグ>中身</終了タグ>\n終了タグには / がつく！\n\n✗ <p>こんにちは ← 閉じ忘れ\n○ <p>こんにちは</p> ← ちゃんと挟む'
       },
       {
         speaker: 'fukurou',
         text: 'ちなみに p は paragraph（段落）の略じゃ'
       },
       {
+        speaker: 'tama',
+        text: 'もじもじ...'
+      },
+      {
+        speaker: 'piyo',
+        text: 'ん？タマちゃんどうしたの？'
+      },
+      {
+        speaker: 'tama',
+        text: '...ちらっ'
+      },
+      {
+        speaker: 'piyo',
+        text: 'あ、href="..."ってやつが気になる？わたしも気になってた！'
+      },
+      {
+        speaker: 'tama',
+        text: 'こくこく！'
+      },
+      {
         speaker: 'fukurou',
-        text: 'タグには「属性」をつけて追加情報を与えることもできるぞ'
+        text: 'よく気づいたのう。それは「属性」というものじゃ'
       },
       {
         type: 'code',
         content: '<a href="https://example.com">リンク</a>'
       },
       {
-        speaker: 'piyo',
-        text: 'href="..."ってのが属性？'
-      },
-      {
         speaker: 'fukurou',
-        text: 'その通り。属性名="値" の形で、タグに情報を追加するのじゃ'
+        text: '属性名="値" の形で、タグに追加情報を与えるのじゃ'
       },
       {
         type: 'point',
@@ -164,15 +215,19 @@ const WORLD1_STAGES = [
       },
       {
         speaker: 'piyo',
-        text: '頭(head)が先で、体(body)が後なんだね！覚えやすい！'
+        text: '頭(head)が先で、体(body)が後！覚えやすい！'
+      },
+      {
+        speaker: 'tama',
+        text: 'ふむふむ！'
       }
     ],
 
     // ゲーム導入
     gameIntro: [
-      { c: 'piyo', text: 'じゃあさじゃあさ！' },
-      { c: 'piyo', text: 'ちゃんとわかったかゲームしよ！' },
-      { c: 'tama', text: 'うんうん！' }
+      { c: 'piyo', text: 'よーし、ちゃんとわかったかクイズだよ！' },
+      { c: 'tama', text: 'どきどき...' },
+      { c: 'piyo', text: '大丈夫！さっき一緒に勉強したもんね！' }
     ],
 
     // 問題
@@ -188,12 +243,14 @@ const WORLD1_STAGES = [
           { text: 'p>こんにちは</p>', correct: false }
         ],
         correctComment: [
-          { c: 'piyo', text: 'やった〜！大正解だよ！🎉' },
-          { c: 'fukurou', text: 'タグで挟んで、終了タグには / ！完璧じゃ' }
+          { c: 'tama', text: 'きゅぴーん✨' },
+          { c: 'piyo', text: 'タマちゃんすごい！サンドイッチ覚えてたんだね🥪' },
+          { c: 'fukurou', text: '終了タグの / も見逃さなかったのう' }
         ],
         wrongComment: [
-          { c: 'piyo', text: 'あれれ？ちょっと違うかも〜' },
-          { c: 'fukurou', text: '終了タグには / が必要じゃ。サンドイッチ🥪のように挟むのじゃ' }
+          { c: 'piyo', text: 'あれれ？もう一回見てみよ！' },
+          { c: 'fukurou', text: 'サンドイッチを思い出すのじゃ🥪 上下のパンで挟むように、タグで挟むんじゃ' },
+          { c: 'tama', text: 'はっ！' }
         ],
         points: 10
       },
@@ -209,12 +266,14 @@ const WORLD1_STAGES = [
           { text: '</a>', correct: false }
         ],
         correctComment: [
-          { c: 'piyo', text: 'おお、正解だよ！🎉' },
-          { c: 'fukurou', text: '属性はタグに追加情報を与えるものじゃ' }
+          { c: 'piyo', text: '正解！🎉 さっきタマちゃんが気になってたやつだね！' },
+          { c: 'tama', text: 'えへへ' },
+          { c: 'fukurou', text: '属性名="値" の形、バッチリじゃ' }
         ],
         wrongComment: [
           { c: 'fukurou', text: 'ちょっと違うのう' },
-          { c: 'fukurou', text: '<a>はタグ、「リンク」は中身じゃ。属性は href="..." の部分じゃよ' }
+          { c: 'piyo', text: '<a>はタグ、「リンク」は中身だよ〜' },
+          { c: 'fukurou', text: '属性は href="..." の部分じゃ。タグに追加情報をくっつけるんじゃ' }
         ],
         points: 10
       },
@@ -231,14 +290,14 @@ const WORLD1_STAGES = [
         ],
         correctOrder: ['c', 'd', 'e', 'b', 'a'],
         correctComment: [
-          { c: 'piyo', text: 'すっご〜い！完璧！🎉' },
-          { c: 'fukurou', text: 'DOCTYPE → html → head → body → /html の順じゃな' },
-          { c: 'piyo', text: '頭(head)が先で、体(body)が後なんだね！' }
+          { c: 'piyo', text: 'すっご〜い！完璧だよタマちゃん！🎉' },
+          { c: 'tama', text: 'やったー！' },
+          { c: 'fukurou', text: '頭(head)が先で、体(body)が後。よく覚えておったのう' }
         ],
         wrongComment: [
-          { c: 'piyo', text: 'あれれ？ちょっと順番が違うかも' },
+          { c: 'piyo', text: 'おしい！順番がちょっと違うかも' },
           { c: 'fukurou', text: '最初は必ず <!DOCTYPE html> で始まるのじゃ' },
-          { c: 'fukurou', text: 'HTMLの自己紹介みたいなものじゃな' }
+          { c: 'piyo', text: '「私はHTMLです！」って自己紹介から始めるんだね' }
         ],
         points: 15
       }
@@ -246,9 +305,10 @@ const WORLD1_STAGES = [
 
     // クリア時
     clearComment: [
-      { c: 'piyo', text: 'やった〜！全部できたね！' },
-      { c: 'fukurou', text: 'HTMLの基本、バッチリじゃな' },
-      { c: 'piyo', text: '次はもっと詳しく見ていこ！' }
+      { c: 'piyo', text: 'タマちゃん、全問正解〜！🎉🎉' },
+      { c: 'tama', text: 'きらきら〜✨' },
+      { c: 'fukurou', text: '最初はおろおろしておったが、もう立派なものじゃ' },
+      { c: 'piyo', text: 'ね！一緒にがんばったもんね！次もいこ！' }
     ]
   },
 
