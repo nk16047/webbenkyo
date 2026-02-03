@@ -10,10 +10,9 @@ const state = {
   totalPoints: 0,
   correctCount: 0,
   stagePoints: 0,
-  dialogueIndex: 0,
-  discoveryIndex: 0,
   answers: {},
-  stages: WORLD1_STAGES
+  stages: WORLD1_STAGES,
+  currentScreen: 'title'
 };
 
 // キャラクター進化の閾値
@@ -32,6 +31,7 @@ function init() {
   cacheElements();
   loadProgress();
   setupEventListeners();
+  setupKeyboardShortcuts();
   updateUI();
 }
 
@@ -75,12 +75,58 @@ function cacheElements() {
 function setupEventListeners() {
   elements.btnStart.addEventListener('click', startGame);
   elements.btnContinue.addEventListener('click', continueGame);
-  elements.btnStoryNext.addEventListener('click', nextDialogue);
-  elements.btnDiscoveryNext.addEventListener('click', nextDiscovery);
+  elements.btnStoryNext.addEventListener('click', goToDiscovery);
+  elements.btnDiscoveryNext.addEventListener('click', goToGameIntro);
   elements.btnStartGame.addEventListener('click', startQuiz);
   elements.btnNextQuestion.addEventListener('click', nextQuestion);
   elements.btnNextStage.addEventListener('click', nextStage);
   elements.btnNextWorld.addEventListener('click', nextWorld);
+}
+
+// キーボードショートカット
+function setupKeyboardShortcuts() {
+  document.addEventListener('keydown', (e) => {
+    // 入力中は無視
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+
+    // Enter, Space, → で次へ進む
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      handleNextAction();
+    }
+  });
+}
+
+// 現在の画面に応じて次のアクションを実行
+function handleNextAction() {
+  switch (state.currentScreen) {
+    case 'title':
+      if (elements.btnContinue.style.display !== 'none') {
+        continueGame();
+      } else {
+        startGame();
+      }
+      break;
+    case 'story':
+      goToDiscovery();
+      break;
+    case 'discovery':
+      goToGameIntro();
+      break;
+    case 'game-intro':
+      startQuiz();
+      break;
+    case 'result':
+      nextQuestion();
+      break;
+    case 'stage-clear':
+      nextStage();
+      break;
+    case 'world-clear':
+      nextWorld();
+      break;
+    // quiz画面ではキーボードショートカットは使わない（選択操作があるため）
+  }
 }
 
 // 進捗をロード
@@ -152,6 +198,7 @@ function getCharacter() {
 
 // 画面切り替え
 function showScreen(screenId) {
+  state.currentScreen = screenId;
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + screenId).classList.add('active');
 }
@@ -161,8 +208,6 @@ function startGame() {
   state.currentStage = 0;
   state.currentQuestion = 0;
   state.stagePoints = 0;
-  state.dialogueIndex = 0;
-  state.discoveryIndex = 0;
   startStage();
 }
 
@@ -170,33 +215,28 @@ function startGame() {
 function continueGame() {
   state.currentQuestion = 0;
   state.stagePoints = 0;
-  state.dialogueIndex = 0;
-  state.discoveryIndex = 0;
   startStage();
 }
 
 // ステージ開始
 function startStage() {
   const stage = state.stages[state.currentStage];
-  state.dialogueIndex = 0;
-  state.discoveryIndex = 0;
   state.stagePoints = 0;
   updateUI();
 
-  // ストーリー画面へ
+  // ストーリー画面へ - 会話を一気に表示
   elements.storyContent.innerHTML = '';
+  showAllDialogues(elements.storyContent, stage.opening);
   showScreen('story');
-  showDialogue(stage.opening);
 }
 
-// 会話を表示
-function showDialogue(dialogues) {
-  if (state.dialogueIndex < dialogues.length) {
-    const d = dialogues[state.dialogueIndex];
+// 会話を一気に表示
+function showAllDialogues(container, dialogues) {
+  dialogues.forEach((d, index) => {
     const char = CHARACTERS[d.c];
-
     const dialogueEl = document.createElement('div');
     dialogueEl.className = 'dialogue';
+    dialogueEl.style.animationDelay = (index * 0.1) + 's';
     dialogueEl.innerHTML = `
       <div class="dialogue-character">${char.emoji}</div>
       <div class="dialogue-bubble">
@@ -204,38 +244,21 @@ function showDialogue(dialogues) {
         <div class="dialogue-text">${escapeHtml(d.text)}</div>
       </div>
     `;
-    elements.storyContent.appendChild(dialogueEl);
-
-    // スクロール
-    dialogueEl.scrollIntoView({ behavior: 'smooth', block: 'end' });
-
-    state.dialogueIndex++;
-
-    if (state.dialogueIndex >= dialogues.length) {
-      elements.btnStoryNext.textContent = '次へ進む';
-    }
-  }
+    container.appendChild(dialogueEl);
+  });
 }
 
-// 次の会話
-function nextDialogue() {
+// 発見パートへ
+function goToDiscovery() {
   const stage = state.stages[state.currentStage];
-
-  if (state.dialogueIndex < stage.opening.length) {
-    showDialogue(stage.opening);
-  } else {
-    // 発見パートへ
-    state.discoveryIndex = 0;
-    elements.discoveryContent.innerHTML = '';
-    showScreen('discovery');
-    showDiscovery(stage.discovery);
-  }
+  elements.discoveryContent.innerHTML = '';
+  showAllDiscoveries(elements.discoveryContent, stage.discovery);
+  showScreen('discovery');
 }
 
-// 発見パートを表示
-function showDiscovery(discoveries) {
-  if (state.discoveryIndex < discoveries.length) {
-    const d = discoveries[state.discoveryIndex];
+// 発見パートを一気に表示
+function showAllDiscoveries(container, discoveries) {
+  discoveries.forEach((d, index) => {
     let el;
 
     if (d.type === 'code') {
@@ -267,45 +290,18 @@ function showDiscovery(discoveries) {
     }
 
     if (el) {
-      elements.discoveryContent.appendChild(el);
-      el.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      el.style.animationDelay = (index * 0.05) + 's';
+      container.appendChild(el);
     }
-
-    state.discoveryIndex++;
-
-    if (state.discoveryIndex >= discoveries.length) {
-      elements.btnDiscoveryNext.textContent = 'ゲームに進む';
-    }
-  }
+  });
 }
 
-// 次の発見
-function nextDiscovery() {
+// ゲーム導入へ
+function goToGameIntro() {
   const stage = state.stages[state.currentStage];
-
-  if (state.discoveryIndex < stage.discovery.length) {
-    showDiscovery(stage.discovery);
-  } else {
-    // ゲーム導入へ
-    state.dialogueIndex = 0;
-    elements.gameIntroContent.innerHTML = '';
-    showScreen('game-intro');
-
-    // ゲーム導入の会話を一気に表示
-    for (const d of stage.gameIntro) {
-      const char = CHARACTERS[d.c];
-      const dialogueEl = document.createElement('div');
-      dialogueEl.className = 'dialogue';
-      dialogueEl.innerHTML = `
-        <div class="dialogue-character">${char.emoji}</div>
-        <div class="dialogue-bubble">
-          <div class="dialogue-name">${char.name}</div>
-          <div class="dialogue-text">${escapeHtml(d.text)}</div>
-        </div>
-      `;
-      elements.gameIntroContent.appendChild(dialogueEl);
-    }
-  }
+  elements.gameIntroContent.innerHTML = '';
+  showAllDialogues(elements.gameIntroContent, stage.gameIntro);
+  showScreen('game-intro');
 }
 
 // クイズ開始
@@ -421,6 +417,9 @@ function renderFillQuestion(question) {
   });
 
   elements.quizChoices.appendChild(container);
+
+  // 自動フォーカス
+  setTimeout(() => input.focus(), 100);
 }
 
 // 並べ替え問題のUI
@@ -482,8 +481,7 @@ function renderSortQuestion(question) {
       const selected = container.querySelector('.sort-item.selected');
       if (selected && selected !== itemEl) {
         // 入れ替え
-        const parent = container;
-        const items = [...parent.querySelectorAll('.sort-item')];
+        const items = [...container.querySelectorAll('.sort-item')];
         const idx1 = items.indexOf(selected);
         const idx2 = items.indexOf(itemEl);
 
@@ -626,10 +624,11 @@ function showResult(isCorrect, question) {
 // コメントを描画
 function renderComments(container, comments) {
   container.innerHTML = '';
-  comments.forEach(c => {
+  comments.forEach((c, index) => {
     const char = CHARACTERS[c.c];
     const dialogueEl = document.createElement('div');
     dialogueEl.className = 'dialogue';
+    dialogueEl.style.animationDelay = (index * 0.1) + 's';
     dialogueEl.innerHTML = `
       <div class="dialogue-character">${char.emoji}</div>
       <div class="dialogue-bubble">
@@ -682,10 +681,6 @@ function nextStage() {
   } else {
     state.currentQuestion = 0;
     state.stagePoints = 0;
-    state.dialogueIndex = 0;
-    state.discoveryIndex = 0;
-    elements.btnDiscoveryNext.textContent = '次へ';
-    elements.btnStoryNext.textContent = '次へ';
     saveProgress();
     startStage();
   }
