@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webのたまご - HTML/CSS/JS学習クイズ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- ヘッダー -->
+    <header class="header">
+      <div class="header-left">
+        <span class="logo">Webのたまご</span>
+        <span id="character" class="character">🥚</span>
+      </div>
+      <div class="header-right">
+        <span id="world-stage" class="world-stage">ワールド1 - ステージ1</span>
+      </div>
+    </header>
+
+    <!-- プログレスバー -->
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+      </div>
+      <span id="progress-text" class="progress-text">0%</span>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+
+      <!-- タイトル画面 -->
+      <section id="screen-title" class="screen active">
+        <div class="title-screen">
+          <div class="title-egg">🥚</div>
+          <h1 class="title-text">Webのたまご</h1>
+          <p class="title-subtitle">たまご村のみんなと一緒に<br>Webページの作り方を発見しよう！</p>
+          <button id="btn-start" class="btn btn-primary btn-large">はじめる</button>
+          <button id="btn-continue" class="btn btn-secondary" style="display: none;">続きから</button>
+        </div>
+      </section>
+
+      <!-- ストーリー画面 -->
+      <section id="screen-story" class="screen">
+        <div class="story-container">
+          <div id="story-content" class="story-content">
+            <!-- 会話が動的に入る -->
+          </div>
+          <button id="btn-story-next" class="btn btn-primary">次へ</button>
+        </div>
+      </section>
+
+      <!-- 発見パート画面 -->
+      <section id="screen-discovery" class="screen">
+        <div class="discovery-container">
+          <div id="discovery-content" class="discovery-content">
+            <!-- 発見内容が動的に入る -->
+          </div>
+          <button id="btn-discovery-next" class="btn btn-primary">次へ</button>
+        </div>
+      </section>
+
+      <!-- ゲーム導入画面 -->
+      <section id="screen-game-intro" class="screen">
+        <div class="game-intro-container">
+          <div id="game-intro-content" class="story-content">
+            <!-- 導入会話が入る -->
+          </div>
+          <button id="btn-start-game" class="btn btn-primary btn-large">ゲームに挑戦！</button>
+        </div>
+      </section>
+
+      <!-- クイズ画面 -->
+      <section id="screen-quiz" class="screen">
+        <div class="quiz-container">
+          <div class="quiz-header">
+            <span id="quiz-number" class="quiz-number">Q1</span>
+            <span id="quiz-points" class="quiz-points">+10pt</span>
+          </div>
+          <div id="quiz-question" class="quiz-question">
+            <!-- 問題文 -->
+          </div>
+          <div id="quiz-code" class="quiz-code" style="display: none;">
+            <!-- コードブロック -->
+          </div>
+          <div id="quiz-choices" class="quiz-choices">
+            <!-- 選択肢が動的に入る -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 結果画面 -->
+      <section id="screen-result" class="screen">
+        <div class="result-container">
+          <div id="result-icon" class="result-icon">🎉</div>
+          <div id="result-title" class="result-title">正解！</div>
+          <div id="result-comment" class="result-comment">
+            <!-- コメントが動的に入る -->
+          </div>
+          <a id="result-mdn-link" class="mdn-link" href="#" target="_blank" style="display: none;">
+            📖 MDNでもっと詳しく
+          </a>
+          <button id="btn-next-question" class="btn btn-primary">次へ</button>
+        </div>
+      </section>
+
+      <!-- ステージクリア画面 -->
+      <section id="screen-stage-clear" class="screen">
+        <div class="stage-clear-container">
+          <div class="clear-icon">⭐</div>
+          <h2 class="clear-title">ステージクリア！</h2>
+          <div id="clear-comment" class="clear-comment">
+            <!-- クリアコメント -->
+          </div>
+          <div id="clear-points" class="clear-points">
+            <!-- 獲得ポイント -->
+          </div>
+          <button id="btn-next-stage" class="btn btn-primary btn-large">次のステージへ</button>
+        </div>
+      </section>
+
+      <!-- ワールドクリア画面 -->
+      <section id="screen-world-clear" class="screen">
+        <div class="world-clear-container">
+          <div class="world-clear-icon">🎊</div>
+          <h2 class="world-clear-title">ワールドクリア！！</h2>
+          <div id="world-clear-character" class="world-clear-character">🐣</div>
+          <p id="world-clear-message" class="world-clear-message">たまごがかえった！</p>
+          <div id="world-clear-comment" class="world-clear-comment">
+            <!-- コメント -->
+          </div>
+          <button id="btn-next-world" class="btn btn-primary btn-large">次のワールドへ</button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="footer">
+      <div class="footer-left">
+        <span id="total-points" class="total-points">💰 0pt</span>
+      </div>
+      <div class="footer-right">
+        <span id="footer-character" class="footer-character">🥚</span>
+      </div>
+    </footer>
+
+    <!-- 紙吹雪エフェクト用 -->
+    <div id="confetti-container" class="confetti-container"></div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
