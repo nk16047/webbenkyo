@@ -204,7 +204,7 @@ function loadProgress() {
   }
 
   // ステージ選択を更新
-  updateStageSelect();
+  updateNavStageSelect();
 }
 
 // 進捗を保存
