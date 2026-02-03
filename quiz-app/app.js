@@ -17,7 +17,15 @@ const state = {
   lastQuestionCorrect: null
 };
 
-// キャラクター進化の閾値（称号システム）
+// ===================================================
+// ポイント・称号システム
+// ===================================================
+// 現在の仕様: 初回正解時のみポイント加算、ペナルティなし
+// 拡張ポイント:
+//   - recordAnswer() でポイント計算ロジックを集約
+//   - EVOLUTION で称号閾値を定義
+//   - 将来: 連続正解ボーナス、難易度係数、実績システム等
+
 const EVOLUTION = [
   { min: 0, emoji: '🥚', name: 'ビギナー' },
   { min: 10, emoji: '🌱', name: 'めばえ' },
@@ -25,6 +33,34 @@ const EVOLUTION = [
   { min: 35, emoji: '🌟', name: 'きらめき' },
   { min: 50, emoji: '👑', name: 'マスター' }
 ];
+
+// 回答を記録してポイント計算
+// 戻り値: { pointsEarned, isFirstCorrect, attempts }
+function recordAnswer(questionId, isCorrect, basePoints) {
+  const past = state.answers[questionId];
+  const wasCorrect = past?.correct;
+  const attempts = (past?.attempts || 0) + 1;
+
+  let pointsEarned = 0;
+  let isFirstCorrect = false;
+
+  if (isCorrect && !wasCorrect) {
+    // 初回正解: ポイント付与
+    pointsEarned = basePoints;
+    isFirstCorrect = true;
+    state.correctCount++;
+    state.totalPoints += pointsEarned;
+    state.stagePoints += pointsEarned;
+  }
+
+  // 回答履歴を更新
+  state.answers[questionId] = {
+    correct: isCorrect || wasCorrect,  // 一度正解したらtrue維持
+    attempts
+  };
+
+  return { pointsEarned, isFirstCorrect, attempts };
+}
 
 // DOM要素のキャッシュ
 const elements = {};
@@ -717,30 +753,16 @@ function renderMatchQuestion(question) {
 function showResult(isCorrect, question) {
   const stage = state.stages[state.currentStage];
 
-  // 過去の回答を確認
-  const pastAnswer = state.answers[question.id];
-  const alreadyCorrect = pastAnswer && pastAnswer.correct;
-
   // 保存用
   state.lastQuestion = question;
   state.lastQuestionCorrect = isCorrect;
 
+  // 回答を記録（ポイント計算もここで）
+  const result = recordAnswer(question.id, isCorrect, question.points);
+
   if (isCorrect) {
-    // 初めての正解ならポイント加算
-    if (!alreadyCorrect) {
-      state.correctCount++;
-      state.totalPoints += question.points;
-      state.stagePoints += question.points;
-    }
-
-    // 回答履歴を更新
-    state.answers[question.id] = {
-      correct: true,
-      attempts: (pastAnswer?.attempts || 0) + 1
-    };
-
     elements.resultIcon.textContent = '🎉';
-    elements.resultTitle.textContent = alreadyCorrect ? '復習OK！' : '正解！';
+    elements.resultTitle.textContent = result.isFirstCorrect ? '正解！' : '復習OK！';
     elements.resultTitle.className = 'result-title correct';
 
     renderComments(elements.resultComment, question.correctComment);
@@ -750,21 +772,11 @@ function showResult(isCorrect, question) {
       elements.resultCorrectAnswer.style.display = 'none';
     }
 
-    // 紙吹雪
-    if (!alreadyCorrect) {
+    // 初回正解時のみ紙吹雪
+    if (result.isFirstCorrect) {
       createConfetti();
     }
   } else {
-    // 回答履歴を更新（初回の不正解のみ記録）
-    if (!pastAnswer) {
-      state.answers[question.id] = {
-        correct: false,
-        attempts: 1
-      };
-    } else {
-      state.answers[question.id].attempts++;
-    }
-
     elements.resultIcon.textContent = '😊';
     elements.resultTitle.textContent = 'おしい！';
     elements.resultTitle.className = 'result-title wrong';
