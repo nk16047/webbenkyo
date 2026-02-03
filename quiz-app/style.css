@@ -22,6 +22,13 @@
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
   --radius: 12px;
   --radius-sm: 8px;
+
+  /* キャラクターカラー */
+  --char-tama: #FFE4B5;      /* タマちゃん: クリーム色 */
+  --char-piyo: #FFFACD;      /* ピヨちゃん: レモン色 */
+  --char-cocco: #FFB6C1;     /* コッコちゃん: ピンク */
+  --char-niwao: #B0E0E6;     /* ニワオ: 水色 */
+  --char-fukurou: #DDA0DD;   /* フクロウさん: 紫 */
 }
 
 /* リセット */
@@ -233,11 +240,27 @@ body {
   gap: 12px;
   align-items: flex-start;
   animation: slideIn 0.3s ease;
+  max-width: 85%;
+}
+
+/* タマちゃん（主人公）は右側に表示 */
+.dialogue.is-protagonist {
+  flex-direction: row-reverse;
+  margin-left: auto;
 }
 
 @keyframes slideIn {
   from { opacity: 0; transform: translateX(-10px); }
   to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.dialogue.is-protagonist {
+  animation: slideInRight 0.3s ease;
 }
 
 .dialogue-character {
@@ -262,6 +285,27 @@ body {
   border: 8px solid transparent;
   border-right-color: var(--bg-light);
 }
+
+/* 主人公の吹き出しは矢印を右側に */
+.dialogue.is-protagonist .dialogue-bubble::before {
+  left: auto;
+  right: -8px;
+  border-right-color: transparent;
+  border-left-color: var(--char-tama);
+}
+
+/* キャラクター別の吹き出し色 */
+.dialogue-bubble.char-tama { background: var(--char-tama); }
+.dialogue-bubble.char-piyo { background: var(--char-piyo); }
+.dialogue-bubble.char-cocco { background: var(--char-cocco); }
+.dialogue-bubble.char-niwao { background: var(--char-niwao); }
+.dialogue-bubble.char-fukurou { background: var(--char-fukurou); }
+
+.dialogue-bubble.char-tama::before { border-right-color: var(--char-tama); }
+.dialogue-bubble.char-piyo::before { border-right-color: var(--char-piyo); }
+.dialogue-bubble.char-cocco::before { border-right-color: var(--char-cocco); }
+.dialogue-bubble.char-niwao::before { border-right-color: var(--char-niwao); }
+.dialogue-bubble.char-fukurou::before { border-right-color: var(--char-fukurou); }
 
 .dialogue-name {
   font-size: 0.8rem;
@@ -426,7 +470,32 @@ body {
 }
 
 /* 並べ替え問題 */
+.sort-container {
+  display: flex;
+  gap: 8px;
+}
+
+.sort-numbers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sort-number {
+  width: 32px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: white;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
 .sort-items {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -442,6 +511,7 @@ body {
   border-radius: var(--radius-sm);
   cursor: grab;
   transition: all 0.2s ease;
+  min-height: 52px;
 }
 
 .sort-item:active {
@@ -451,19 +521,23 @@ body {
 .sort-item.dragging {
   opacity: 0.5;
   border-color: var(--accent);
+  transform: scale(1.02);
 }
 
-.sort-item-number {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--accent);
-  color: white;
-  border-radius: 50%;
-  font-size: 0.8rem;
-  font-weight: bold;
+.sort-item.selected {
+  border-color: var(--accent);
+  background: #FFF5EB;
+  box-shadow: 0 0 0 3px rgba(255, 155, 80, 0.3);
+}
+
+.sort-item.just-moved {
+  animation: sortBounce 0.3s ease;
+}
+
+@keyframes sortBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); background: #FFF5EB; }
+  100% { transform: scale(1); }
 }
 
 .sort-item-text {
@@ -475,6 +549,36 @@ body {
 .sort-submit {
   margin-top: 16px;
 }
+
+/* HTMLプレビュー */
+.html-preview {
+  margin-top: 12px;
+  padding: 16px;
+  background: white;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.html-preview-label {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.html-preview-content {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.html-preview-content h1 { font-size: 2em; margin: 0.67em 0; }
+.html-preview-content h2 { font-size: 1.5em; margin: 0.83em 0; }
+.html-preview-content h3 { font-size: 1.17em; margin: 1em 0; }
+.html-preview-content p { margin: 1em 0; }
+.html-preview-content ul, .html-preview-content ol { margin: 1em 0; padding-left: 40px; }
+.html-preview-content strong { font-weight: bold; }
+.html-preview-content em { font-style: italic; }
 
 /* マッチング問題 */
 .match-container {

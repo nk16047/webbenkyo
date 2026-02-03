@@ -69,13 +69,10 @@ const WORLD1_STAGES = [
     opening: [
       { c: 'piyo', text: 'たいへんたいへーん！' },
       { c: 'tama', text: 'どしたのピヨちゃん？' },
-      { c: 'piyo', text: '村のホームページ作ることになったんだけど...' },
-      { c: 'piyo', text: '誰も作り方知らないの！' },
-      { c: 'cocco', text: 'えー、どうしよ〜' },
+      { c: 'piyo', text: '村のホームページ作ることになったんだけど、作り方知らないの！' },
       { c: 'fukurou', text: 'ホッホッホ。HTMLというものを使うのじゃ' },
       { c: 'piyo', text: 'えいちてぃーえむえる...？' },
       { c: 'fukurou', text: 'まあ、やってみればわかるさ' },
-      { c: 'piyo', text: 'よーし！みんなでやってみよー！' },
       { c: 'tama', text: 'わくわくしてきた！' }
     ],
 
@@ -524,16 +521,15 @@ const WORLD1_STAGES = [
     mdnTitle: 'Emphasis and importance',
 
     opening: [
-      { c: 'cocco', text: 'ねえ、「期間限定！」とか目立たせたいんだけど〜' },
-      { c: 'piyo', text: '太字とか斜めの字にするやつ？' },
-      { c: 'cocco', text: 'そうそう！どうやるの？' },
+      { c: 'piyo', text: 'ねえ、「期間限定！」とか目立たせたいな〜' },
+      { c: 'tama', text: '太字とか斜めの字にするやつ？' },
       { c: 'niwao', text: 'それにはいくつか方法があるんだ' }
     ],
 
     discovery: [
       {
         speaker: 'niwao',
-        text: '「これ重要！」って意味を込めるなら <strong> を使う'
+        text: '「これ大事！」って意味を込めるなら <strong> を使う'
       },
       {
         type: 'code',
@@ -804,44 +800,52 @@ const WORLD1_STAGES = [
     mdnTitle: 'Structuring documents',
 
     opening: [
-      { c: 'cocco', text: 'ページが長くなってきた〜' },
-      { c: 'piyo', text: 'ヘッダーとかフッターとか、ちゃんと分けたいね' },
+      { c: 'piyo', text: 'ページが長くなってきたね〜' },
       { c: 'fukurou', text: 'ページを意味のある部分に分けるタグがあるぞ' }
     ],
 
     discovery: [
       {
         speaker: 'fukurou',
-        text: 'Webページはこんな構造になっていることが多いのじゃ'
+        text: 'Webページは「お店」みたいなものじゃ'
       },
       {
         type: 'point',
-        title: 'ページの構造',
-        content: '<header> = ページの上部（ロゴ、タイトルなど）\n<nav> = ナビゲーション（メニュー）\n<main> = メインコンテンツ\n<aside> = サイドバー\n<footer> = ページの下部（著作権など）'
+        title: 'お店に例えると...',
+        content: '🏪 お店 = Webページ全体\n\n🚪 入口の看板 = <header>（ロゴ、タイトル）\n📋 メニュー表 = <nav>（ナビゲーション）\n🛒 売り場 = <main>（メインコンテンツ）\n📰 チラシ置き場 = <aside>（サイドバー）\n🚪 レジ横の案内 = <footer>（著作権など）'
       },
       {
         speaker: 'piyo',
-        text: 'へ〜！場所によってタグが違うんだ'
+        text: 'なるほど！場所によって役割が決まってるんだ'
       },
       {
         speaker: 'fukurou',
         text: 'これを「セマンティック（意味のある）タグ」というのじゃ'
       },
       {
-        speaker: 'cocco',
+        speaker: 'fukurou',
+        text: '見た目は同じでも、意味を伝えることが大事なんじゃ'
+      },
+      {
+        type: 'point',
+        title: 'なぜ意味が大事？',
+        content: '・目が見えない人の読み上げソフトが「ここはメニューです」と教えてくれる\n・検索エンジンが「ここが本文だな」と理解できる\n・コードを読む人が「ここはヘッダーか」とすぐわかる'
+      },
+      {
+        speaker: 'piyo',
         text: 'じゃあ<div>ってなに？よく見るけど'
       },
       {
-        speaker: 'niwao',
-        text: '<div>は意味を持たない「ただの箱」だな'
+        speaker: 'fukurou',
+        text: '<div>は「ただの段ボール箱」じゃな'
       },
       {
-        speaker: 'niwao',
-        text: 'グループ化したいけど特別な意味がないときに使う'
+        speaker: 'fukurou',
+        text: '中身が何かわからない。でも、とりあえずまとめたい時に使う'
       },
       {
         type: 'code',
-        content: '<header>\n  <h1>たまご村</h1>\n  <nav>\n    <a href="#about">紹介</a>\n    <a href="#access">アクセス</a>\n  </nav>\n</header>\n<main>\n  <p>ようこそ！</p>\n</main>\n<footer>\n  <p>© たまご村</p>\n</footer>'
+        content: '<header>\n  <h1>たまご村</h1>\n  <nav>\n    <a href="#about">紹介</a>\n  </nav>\n</header>\n<main>\n  <p>ようこそ！</p>\n</main>\n<footer>\n  <p>© たまご村</p>\n</footer>'
       },
       {
         speaker: 'piyo',
@@ -885,13 +889,12 @@ const WORLD1_STAGES = [
           { text: 'フッターを作るとき', correct: false }
         ],
         correctComment: [
-          { c: 'niwao', text: 'その通り！🎉' },
-          { c: 'niwao', text: '<div>は意味のない「ただの箱」だ' },
-          { c: 'cocco', text: '意味があるときはちゃんとしたタグを使うんだね！' }
+          { c: 'fukurou', text: 'その通り！🎉' },
+          { c: 'fukurou', text: '<div>は「ただの段ボール箱」。意味があるならちゃんとしたタグを使うのじゃ' }
         ],
         wrongComment: [
-          { c: 'niwao', text: 'う〜ん、<div>は「ただの箱」なんだ' },
-          { c: 'niwao', text: 'ヘッダーなら<header>、ナビなら<nav>を使うぜ' }
+          { c: 'fukurou', text: '<div>は意味のない「ただの箱」じゃ' },
+          { c: 'fukurou', text: 'ヘッダーなら<header>、ナビなら<nav>を使うのじゃ' }
         ],
         points: 10
       },
@@ -919,8 +922,8 @@ const WORLD1_STAGES = [
     ],
 
     clearComment: [
-      { c: 'cocco', text: 'ページの構造がわかってきた！' },
-      { c: 'piyo', text: '村のページ、いい感じになりそう！' }
+      { c: 'piyo', text: 'ページの構造がわかってきた！' },
+      { c: 'fukurou', text: '意味のあるタグを使うと、みんなに優しいページになるぞ' }
     ]
   },
 
@@ -1323,9 +1326,8 @@ const WORLD1_STAGES = [
 
     opening: [
       { c: 'piyo', text: 'HTML編、最後のチャレンジだよ！' },
-      { c: 'cocco', text: '今まで覚えたこと全部使うんだね' },
-      { c: 'niwao', text: '自信持っていこうぜ！' },
-      { c: 'fukurou', text: 'ここまでよく頑張ったのう' }
+      { c: 'tama', text: '今まで覚えたこと全部使うんだね' },
+      { c: 'fukurou', text: 'ここまでよく頑張ったのう。自信を持っていくのじゃ' }
     ],
 
     discovery: [
@@ -1366,14 +1368,11 @@ const WORLD1_STAGES = [
         ],
         correctComment: [
           { c: 'piyo', text: '大正解！🎉🎉🎉' },
-          { c: 'fukurou', text: 'href="#news"が、id="news"のところに飛ぶのじゃ' },
-          { c: 'niwao', text: 'ページ内リンク、バッチリだな！' },
-          { c: 'cocco', text: 'HTMLマスターだね〜！' }
+          { c: 'fukurou', text: 'href="#news"が、id="news"のところに飛ぶのじゃ。ページ内リンク、バッチリじゃ！' }
         ],
         wrongComment: [
           { c: 'piyo', text: 'おしい！' },
-          { c: 'fukurou', text: '#news は id="news" のところに飛ぶリンクじゃ' },
-          { c: 'niwao', text: 'aタグのhref="#news"が答えだぜ' }
+          { c: 'fukurou', text: '#news は id="news" のところに飛ぶリンクじゃ。aタグのhref="#news"が答えじゃよ' }
         ],
         points: 20
       }
@@ -1381,8 +1380,7 @@ const WORLD1_STAGES = [
 
     clearComment: [
       { c: 'piyo', text: 'やった〜〜〜！！！🎉🎉🎉' },
-      { c: 'cocco', text: 'HTML編クリアおめでとう！！' },
-      { c: 'niwao', text: 'よくやったな！' },
+      { c: 'tama', text: 'HTML編クリアだ！' },
       { c: 'fukurou', text: '立派なWebページの骨組みが作れるようになったのう' },
       { c: 'piyo', text: '次はCSSでかわいくしていこう！' }
     ]

@@ -234,12 +234,13 @@ function startStage() {
 function showAllDialogues(container, dialogues) {
   dialogues.forEach((d, index) => {
     const char = CHARACTERS[d.c];
+    const isProtagonist = d.c === 'tama';
     const dialogueEl = document.createElement('div');
-    dialogueEl.className = 'dialogue';
+    dialogueEl.className = `dialogue${isProtagonist ? ' is-protagonist' : ''}`;
     dialogueEl.style.animationDelay = (index * 0.1) + 's';
     dialogueEl.innerHTML = `
       <div class="dialogue-character">${char.emoji}</div>
-      <div class="dialogue-bubble">
+      <div class="dialogue-bubble char-${d.c}">
         <div class="dialogue-name">${char.name}</div>
         <div class="dialogue-text">${escapeHtml(d.text)}</div>
       </div>
@@ -265,6 +266,12 @@ function showAllDiscoveries(container, discoveries) {
       el = document.createElement('div');
       el.className = 'code-block';
       el.textContent = d.content;
+
+      // HTMLプレビューを追加（安全なHTMLのみ）
+      if (shouldShowPreview(d.content)) {
+        const previewEl = createHtmlPreview(d.content);
+        el.appendChild(previewEl);
+      }
     } else if (d.type === 'point') {
       el = document.createElement('div');
       el.className = 'discovery-point';
@@ -278,11 +285,12 @@ function showAllDiscoveries(container, discoveries) {
       el.innerHTML = `<div class="discovery-point-content">${escapeHtml(d.description)}</div>`;
     } else if (d.speaker) {
       const char = CHARACTERS[d.speaker];
+      const isProtagonist = d.speaker === 'tama';
       el = document.createElement('div');
-      el.className = 'dialogue';
+      el.className = `dialogue${isProtagonist ? ' is-protagonist' : ''}`;
       el.innerHTML = `
         <div class="dialogue-character">${char.emoji}</div>
-        <div class="dialogue-bubble">
+        <div class="dialogue-bubble char-${d.speaker}">
           <div class="dialogue-name">${char.name}</div>
           <div class="dialogue-text">${escapeHtml(d.text)}</div>
         </div>
@@ -294,6 +302,49 @@ function showAllDiscoveries(container, discoveries) {
       container.appendChild(el);
     }
   });
+}
+
+// HTMLプレビューを表示すべきか判定
+function shouldShowPreview(code) {
+  // 単純なHTMLタグを含む場合のみプレビュー
+  const previewableTags = ['<p>', '<h1>', '<h2>', '<h3>', '<h4>', '<h5>', '<h6>',
+                           '<ul>', '<ol>', '<li>', '<strong>', '<em>', '<b>', '<i>'];
+  return previewableTags.some(tag => code.includes(tag));
+}
+
+// HTMLプレビューを生成
+function createHtmlPreview(code) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'html-preview';
+  wrapper.innerHTML = `
+    <div class="html-preview-label">👁 プレビュー</div>
+    <div class="html-preview-content"></div>
+  `;
+
+  const content = wrapper.querySelector('.html-preview-content');
+  // 安全なタグのみ許可してレンダリング
+  const safeHtml = sanitizeHtml(code);
+  content.innerHTML = safeHtml;
+
+  return wrapper;
+}
+
+// 安全なHTMLタグのみ残す
+function sanitizeHtml(html) {
+  const allowedTags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li',
+                       'strong', 'em', 'b', 'i', 'br', 'a', 'span'];
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+
+  // スクリプトや危険な要素を削除
+  const scripts = temp.querySelectorAll('script, style, iframe, object, embed');
+  scripts.forEach(s => s.remove());
+
+  // href属性からjavascript:を除去
+  const links = temp.querySelectorAll('a[href^="javascript:"]');
+  links.forEach(a => a.removeAttribute('href'));
+
+  return temp.innerHTML;
 }
 
 // ゲーム導入へ
@@ -424,21 +475,32 @@ function renderFillQuestion(question) {
 
 // 並べ替え問題のUI
 function renderSortQuestion(question) {
-  const container = document.createElement('div');
-  container.className = 'sort-items';
+  const wrapper = document.createElement('div');
+  wrapper.className = 'sort-container';
+
+  // 左側に固定の番号列
+  const numbersCol = document.createElement('div');
+  numbersCol.className = 'sort-numbers';
+  question.items.forEach((_, index) => {
+    const numEl = document.createElement('div');
+    numEl.className = 'sort-number';
+    numEl.textContent = index + 1;
+    numbersCol.appendChild(numEl);
+  });
+
+  // 右側にドラッグ可能なアイテム
+  const itemsContainer = document.createElement('div');
+  itemsContainer.className = 'sort-items';
 
   // シャッフルした配列を作成
   const shuffled = [...question.items].sort(() => Math.random() - 0.5);
 
-  shuffled.forEach((item, index) => {
+  shuffled.forEach((item) => {
     const itemEl = document.createElement('div');
     itemEl.className = 'sort-item';
     itemEl.draggable = true;
     itemEl.dataset.id = item.id;
-    itemEl.innerHTML = `
-      <span class="sort-item-number">${index + 1}</span>
-      <span class="sort-item-text">${escapeHtml(item.text)}</span>
-    `;
+    itemEl.innerHTML = `<span class="sort-item-text">${escapeHtml(item.text)}</span>`;
 
     // ドラッグ&ドロップ
     itemEl.addEventListener('dragstart', (e) => {
@@ -457,11 +519,11 @@ function renderSortQuestion(question) {
     itemEl.addEventListener('drop', (e) => {
       e.preventDefault();
       const draggedId = e.dataTransfer.getData('text/plain');
-      const draggedEl = container.querySelector(`[data-id="${draggedId}"]`);
+      const draggedEl = itemsContainer.querySelector(`[data-id="${draggedId}"]`);
       const dropTarget = itemEl;
 
       if (draggedEl && dropTarget && draggedEl !== dropTarget) {
-        const allItems = [...container.querySelectorAll('.sort-item')];
+        const allItems = [...itemsContainer.querySelectorAll('.sort-item')];
         const draggedIndex = allItems.indexOf(draggedEl);
         const dropIndex = allItems.indexOf(dropTarget);
 
@@ -471,17 +533,18 @@ function renderSortQuestion(question) {
           dropTarget.before(draggedEl);
         }
 
-        // 番号を更新
-        updateSortNumbers(container);
+        // 移動フィードバック
+        draggedEl.classList.add('just-moved');
+        setTimeout(() => draggedEl.classList.remove('just-moved'), 300);
       }
     });
 
-    // タッチ対応（簡易版：タップで選択→別のアイテムタップで入れ替え）
+    // タッチ対応（タップで選択→別のアイテムタップで入れ替え）
     itemEl.addEventListener('click', () => {
-      const selected = container.querySelector('.sort-item.selected');
+      const selected = itemsContainer.querySelector('.sort-item.selected');
       if (selected && selected !== itemEl) {
         // 入れ替え
-        const items = [...container.querySelectorAll('.sort-item')];
+        const items = [...itemsContainer.querySelectorAll('.sort-item')];
         const idx1 = items.indexOf(selected);
         const idx2 = items.indexOf(itemEl);
 
@@ -492,21 +555,26 @@ function renderSortQuestion(question) {
         }
 
         selected.classList.remove('selected');
-        updateSortNumbers(container);
+        // 移動フィードバック
+        selected.classList.add('just-moved');
+        setTimeout(() => selected.classList.remove('just-moved'), 300);
       } else {
-        container.querySelectorAll('.sort-item').forEach(i => i.classList.remove('selected'));
+        itemsContainer.querySelectorAll('.sort-item').forEach(i => i.classList.remove('selected'));
         itemEl.classList.add('selected');
       }
     });
 
-    container.appendChild(itemEl);
+    itemsContainer.appendChild(itemEl);
   });
+
+  wrapper.appendChild(numbersCol);
+  wrapper.appendChild(itemsContainer);
 
   const submitBtn = document.createElement('button');
   submitBtn.className = 'btn btn-primary sort-submit';
   submitBtn.textContent = '回答する';
   submitBtn.addEventListener('click', () => {
-    const items = container.querySelectorAll('.sort-item');
+    const items = itemsContainer.querySelectorAll('.sort-item');
     const userOrder = [...items].map(i => i.dataset.id);
     const isCorrect = JSON.stringify(userOrder) === JSON.stringify(question.correctOrder);
 
@@ -519,16 +587,8 @@ function renderSortQuestion(question) {
     setTimeout(() => showResult(isCorrect, question), 500);
   });
 
-  elements.quizChoices.appendChild(container);
+  elements.quizChoices.appendChild(wrapper);
   elements.quizChoices.appendChild(submitBtn);
-}
-
-// 並べ替えの番号更新
-function updateSortNumbers(container) {
-  const items = container.querySelectorAll('.sort-item');
-  items.forEach((item, index) => {
-    item.querySelector('.sort-item-number').textContent = index + 1;
-  });
 }
 
 // マッチング問題のUI
@@ -626,12 +686,13 @@ function renderComments(container, comments) {
   container.innerHTML = '';
   comments.forEach((c, index) => {
     const char = CHARACTERS[c.c];
+    const isProtagonist = c.c === 'tama';
     const dialogueEl = document.createElement('div');
-    dialogueEl.className = 'dialogue';
+    dialogueEl.className = `dialogue${isProtagonist ? ' is-protagonist' : ''}`;
     dialogueEl.style.animationDelay = (index * 0.1) + 's';
     dialogueEl.innerHTML = `
       <div class="dialogue-character">${char.emoji}</div>
-      <div class="dialogue-bubble">
+      <div class="dialogue-bubble char-${c.c}">
         <div class="dialogue-name">${char.name}</div>
         <div class="dialogue-text">${escapeHtml(c.text)}</div>
       </div>
