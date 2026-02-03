@@ -102,10 +102,6 @@ const WORLD1_STAGES = [
         text: '最後のやつには / がついてる！'
       },
       {
-        speaker: 'piyo',
-        text: 'おお〜よく気づいたね！'
-      },
-      {
         type: 'point',
         title: 'タグのきほん',
         content: '<開始タグ>中身</終了タグ>\n終了タグには / がつく！'
@@ -115,8 +111,58 @@ const WORLD1_STAGES = [
         text: 'ちなみに p は paragraph（段落）の略だぜ'
       },
       {
+        speaker: 'fukurou',
+        text: 'タグには「属性」をつけて追加情報を与えることもできるぞ'
+      },
+      {
+        type: 'code',
+        content: '<a href="https://example.com">リンク</a>'
+      },
+      {
         speaker: 'piyo',
-        text: 'ニワオ何気にものしり！'
+        text: 'href="..."ってのが属性？'
+      },
+      {
+        speaker: 'fukurou',
+        text: 'その通り。属性名="値" の形で、タグに情報を追加するのじゃ'
+      },
+      {
+        type: 'point',
+        title: '属性（ぞくせい）',
+        content: '<タグ 属性名="値">中身</タグ>\n例: href="..." はリンク先を指定する属性'
+      },
+      {
+        speaker: 'cocco',
+        text: 'ところでさ、ページ全体ってどうなってるの？'
+      },
+      {
+        speaker: 'fukurou',
+        text: 'よい質問じゃ。HTMLページには決まった形があるのじゃ'
+      },
+      {
+        type: 'code',
+        content: '<!DOCTYPE html>\n<html>\n  <head>設定</head>\n  <body>ページの中身</body>\n</html>'
+      },
+      {
+        speaker: 'piyo',
+        text: 'なんか色々あるね！'
+      },
+      {
+        speaker: 'fukurou',
+        text: '<!DOCTYPE html>は「これはHTMLだよ」という宣言じゃ'
+      },
+      {
+        speaker: 'niwao',
+        text: '<head>は裏方の設定、<body>は画面に出る部分だな'
+      },
+      {
+        type: 'point',
+        title: 'HTMLページの骨組み',
+        content: '<!DOCTYPE html> → HTMLだよ宣言\n<html> → 全体を囲む\n  <head> → 裏方の設定\n  <body> → 画面に出る部分'
+      },
+      {
+        speaker: 'piyo',
+        text: '頭(head)が先で、体(body)が後なんだね！覚えやすい！'
       }
     ],
 
