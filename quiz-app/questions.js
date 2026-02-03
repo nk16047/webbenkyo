@@ -462,13 +462,13 @@ const WORLD1_STAGES = [
       {
         id: 'w1s3q2',
         type: 'choice',
-        question: 'この見出し、何かおかしくない？',
-        code: '<h1>ニュース</h1>\n<h3>今日の天気</h3>\n<h2>スポーツ</h2>',
+        question: 'この見出し、一番の問題点は？',
+        code: '<h1>ニュース</h1>\n<h3>今日の天気</h3>',
         choices: [
           { text: '問題ないよ', correct: false },
           { text: 'h2を飛ばしてh3を使ってる', correct: true },
           { text: 'h1が最初なのがダメ', correct: false },
-          { text: 'h2とh3が逆', correct: false }
+          { text: 'h3は使っちゃダメ', correct: false }
         ],
         correctComment: [
           { c: 'cocco', text: 'さすが〜！よく見てるね！' },
@@ -570,11 +570,19 @@ const WORLD1_STAGES = [
       {
         type: 'point',
         title: '意味のあるタグ vs 見た目だけのタグ',
-        content: '<strong> = 意味的に「重要」（太字になる）\n<em> = 意味的に「強調」（斜体になる）\n\n<b> = ただ太字にするだけ\n<i> = ただ斜体にするだけ'
+        content: '<strong> = 「これ大事！」重要な情報（太字になる）\n<em> = 「ここ強めに読んで！」強調（斜体になる）\n\n<b> = ただ太字にするだけ\n<i> = ただ斜体にするだけ'
       },
       {
         speaker: 'cocco',
         text: '見た目は同じでも意味が違うんだね〜'
+      },
+      {
+        speaker: 'niwao',
+        text: 'ちなみにstrongは「強い」じゃなくて「重大」って意味な'
+      },
+      {
+        speaker: 'piyo',
+        text: '強調の「強」に惑わされないようにしなきゃ！'
       },
       {
         speaker: 'fukurou',
